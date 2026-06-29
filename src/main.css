@@ -1,0 +1,511 @@
+/* ============================================================================
+   Foundation Finder — Component Styles
+   All selectors prefixed .ff- to avoid Webflow collisions.
+   design.md §8
+   ============================================================================ */
+
+:root {
+  /* ── Foundation Finder semantic tokens ── */
+  --ff-status-open:       var(--color-success, #2d7a3a);
+  --ff-status-closed:     var(--color-muted, #6b7280);
+  --ff-status-pending:    var(--color-warning, #b45309);
+  --ff-status-government: var(--color-info, #1d4ed8);
+
+  --ff-pill-active-bg:       var(--color-primary, #0f4c8a);
+  --ff-pill-active-text:     var(--color-background, #ffffff);
+  --ff-pill-inactive-bg:     transparent;
+  --ff-pill-inactive-border: var(--color-border, #d1d5db);
+
+  --ff-card-border-width:  4px;
+  --ff-focus-ring:         0 0 0 3px var(--color-primary-light, #93c5fd);
+  --ff-modal-overlay:      rgba(0, 0, 0, 0.6);
+}
+
+/* ── Utilities ─────────────────────────────────────────────────────────────── */
+
+.ff-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Root ──────────────────────────────────────────────────────────────────── */
+
+.ff-root {
+  font-family: var(--font-family-base, system-ui, sans-serif);
+  font-size: var(--font-size-base, 16px);
+  color: var(--color-text, #111827);
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.ff-root *,
+.ff-root *::before,
+.ff-root *::after {
+  box-sizing: inherit;
+}
+
+.ff-root *:focus-visible {
+  outline: none;
+  box-shadow: var(--ff-focus-ring);
+}
+
+/* ── Controls (search + filters) ──────────────────────────────────────────── */
+
+.ff-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md, 16px);
+  align-items: flex-start;
+  margin-bottom: var(--spacing-lg, 24px);
+}
+
+/* ── Search ────────────────────────────────────────────────────────────────── */
+
+.ff-search {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 300px;
+}
+
+.ff-search__label {
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-bold, 600);
+  color: var(--color-text, #111827);
+}
+
+.ff-search__input {
+  width: 100%;
+  padding: 10px var(--spacing-md, 16px);
+  border: 1px solid var(--color-border, #d1d5db);
+  border-radius: var(--border-radius-md, 8px);
+  font-size: var(--font-size-base, 16px);
+  font-family: inherit;
+  background: var(--color-background, #ffffff);
+  color: var(--color-text, #111827);
+  min-height: 44px;
+  appearance: none;
+}
+
+.ff-search__input:focus-visible {
+  outline: none;
+  border-color: var(--color-primary, #0f4c8a);
+  box-shadow: var(--ff-focus-ring);
+}
+
+/* ── Filters ───────────────────────────────────────────────────────────────── */
+
+.ff-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md, 16px);
+  width: 100%;
+}
+
+.ff-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 8px);
+}
+
+.ff-filter-group__label {
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-bold, 600);
+  color: var(--color-text-muted, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ff-filter-group__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm, 8px);
+}
+
+/* Mobile: show filter button, hide inline pills */
+.ff-filters-btn {
+  display: none;
+}
+
+.ff-root--mobile .ff-filters-btn {
+  display: flex;
+}
+
+.ff-root--mobile .ff-filters {
+  display: none;
+}
+
+/* ── Pills ─────────────────────────────────────────────────────────────────── */
+
+.ff-pill {
+  padding: 6px var(--spacing-md, 16px);
+  border: 1px solid var(--ff-pill-inactive-border);
+  border-radius: 999px;
+  background: var(--ff-pill-inactive-bg);
+  color: var(--color-text, #111827);
+  font-size: var(--font-size-sm, 14px);
+  font-family: inherit;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  white-space: nowrap;
+  transition: background 120ms, color 120ms, border-color 120ms;
+}
+
+.ff-pill--active {
+  background: var(--ff-pill-active-bg);
+  color: var(--ff-pill-active-text);
+  border-color: var(--ff-pill-active-bg);
+}
+
+.ff-pill:hover:not(.ff-pill--active) {
+  border-color: var(--color-primary, #0f4c8a);
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────────────── */
+
+.ff-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px var(--spacing-md, 16px);
+  border: 1px solid var(--color-border, #d1d5db);
+  border-radius: var(--border-radius-md, 8px);
+  background: var(--color-background, #ffffff);
+  color: var(--color-text, #111827);
+  font-size: var(--font-size-base, 16px);
+  font-family: inherit;
+  font-weight: var(--font-weight-bold, 600);
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  text-decoration: none;
+  transition: background 120ms, color 120ms;
+}
+
+.ff-btn--primary {
+  background: var(--color-primary, #0f4c8a);
+  color: var(--color-background, #ffffff);
+  border-color: var(--color-primary, #0f4c8a);
+}
+
+.ff-btn--primary:hover {
+  background: var(--color-primary-light, #1d6bb8);
+  border-color: var(--color-primary-light, #1d6bb8);
+}
+
+.ff-btn--disabled,
+.ff-btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Results ───────────────────────────────────────────────────────────────── */
+
+.ff-results__count {
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text-muted, #6b7280);
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.ff-results__list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg, 24px);
+}
+
+.ff-root--mobile .ff-results__list {
+  grid-template-columns: 1fr;
+}
+
+/* ── Grant Card ────────────────────────────────────────────────────────────── */
+
+.ff-card {
+  background: var(--color-background, #ffffff);
+  border: 1px solid var(--color-border, #d1d5db);
+  border-radius: var(--border-radius-md, 8px);
+  border-left: var(--ff-card-border-width) solid var(--ff-status-closed);
+  overflow: hidden;
+}
+
+.ff-card--open    { border-left-color: var(--ff-status-open); }
+.ff-card--closed  { border-left-color: var(--ff-status-closed); }
+.ff-card--pending { border-left-color: var(--ff-status-pending); }
+.ff-card--government { border-left-color: var(--ff-status-government); }
+
+.ff-card__header {
+  padding: var(--spacing-lg, 24px);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 8px);
+}
+
+.ff-card__foundation {
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text-muted, #6b7280);
+  margin: 0;
+}
+
+.ff-card__program-name {
+  font-size: var(--font-size-lg, 18px);
+  font-weight: var(--font-weight-bold, 600);
+  color: var(--color-text, #111827);
+  margin: 0;
+}
+
+.ff-card__description {
+  font-size: var(--font-size-base, 16px);
+  color: var(--color-text, #111827);
+  margin: 0;
+}
+
+.ff-card__status-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+  flex-wrap: wrap;
+}
+
+.ff-card__updated {
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text-muted, #6b7280);
+}
+
+.ff-card__toggle {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text-muted, #6b7280);
+  padding: 4px 8px;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* ── Status Pills ──────────────────────────────────────────────────────────── */
+
+.ff-status-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-bold, 600);
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.ff-status-pill--open       { color: var(--ff-status-open); }
+.ff-status-pill--closed     { color: var(--ff-status-closed); }
+.ff-status-pill--pending    { color: var(--ff-status-pending); }
+.ff-status-pill--government { color: var(--ff-status-government); }
+
+/* ── Expandable Details ────────────────────────────────────────────────────── */
+
+.ff-card__body {
+  padding: 0 var(--spacing-lg, 24px) var(--spacing-lg, 24px);
+  border-top: 1px solid var(--color-border, #d1d5db);
+}
+
+.ff-details__row {
+  display: flex;
+  gap: var(--spacing-sm, 8px);
+  margin-top: var(--spacing-md, 16px);
+  font-size: var(--font-size-sm, 14px);
+}
+
+.ff-details__label {
+  font-weight: var(--font-weight-bold, 600);
+  color: var(--color-text-muted, #6b7280);
+  min-width: 60px;
+}
+
+.ff-details__metadata {
+  margin-top: var(--spacing-md, 16px);
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px var(--spacing-md, 16px);
+  font-size: var(--font-size-sm, 14px);
+}
+
+.ff-details__metadata dt {
+  font-weight: var(--font-weight-bold, 600);
+  color: var(--color-text-muted, #6b7280);
+}
+
+.ff-details__metadata dd {
+  margin: 0;
+}
+
+.ff-details__empty {
+  margin-top: var(--spacing-md, 16px);
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text-muted, #6b7280);
+}
+
+/* ── Empty / Error / Loading States ───────────────────────────────────────── */
+
+.ff-empty,
+.ff-error,
+.ff-loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--spacing-xl, 32px) var(--spacing-md, 16px);
+}
+
+.ff-empty__heading,
+.ff-error__heading {
+  font-size: var(--font-size-lg, 18px);
+  font-weight: var(--font-weight-bold, 600);
+  margin: 0 0 var(--spacing-sm, 8px);
+}
+
+.ff-empty__hint,
+.ff-error__detail {
+  font-size: var(--font-size-base, 16px);
+  color: var(--color-text-muted, #6b7280);
+  margin: 0;
+}
+
+.ff-loading__spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border, #d1d5db);
+  border-top-color: var(--color-primary, #0f4c8a);
+  border-radius: 50%;
+  animation: ff-spin 0.8s linear infinite;
+  margin: 0 auto var(--spacing-md, 16px);
+}
+
+@keyframes ff-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ff-loading__text {
+  color: var(--color-text-muted, #6b7280);
+  margin: 0;
+}
+
+/* ── Modal ─────────────────────────────────────────────────────────────────── */
+
+.ff-modal {
+  position: fixed;
+  inset: 0;
+  background: var(--ff-modal-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: var(--spacing-md, 16px);
+}
+
+.ff-modal__dialog {
+  background: var(--color-background, #ffffff);
+  border-radius: var(--border-radius-md, 8px);
+  padding: var(--spacing-xl, 32px);
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.ff-modal__title {
+  font-size: var(--font-size-lg, 18px);
+  font-weight: var(--font-weight-bold, 600);
+  margin: 0 0 var(--spacing-md, 16px);
+}
+
+.ff-modal__body {
+  font-size: var(--font-size-base, 16px);
+  line-height: 1.6;
+}
+
+.ff-modal__body p {
+  margin: 0 0 var(--spacing-md, 16px);
+}
+
+.ff-modal__body p:last-child {
+  margin-bottom: 0;
+}
+
+.ff-modal__footer {
+  margin-top: var(--spacing-lg, 24px);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ff-modal__footer--row {
+  gap: var(--spacing-sm, 8px);
+}
+
+/* ── Filter Drawer (mobile) ────────────────────────────────────────────────── */
+
+.ff-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--ff-modal-overlay);
+  z-index: 9998;
+  display: flex;
+  align-items: flex-end;
+}
+
+.ff-drawer {
+  background: var(--color-background, #ffffff);
+  border-radius: var(--border-radius-md, 8px) var(--border-radius-md, 8px) 0 0;
+  padding: var(--spacing-lg, 24px);
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.ff-drawer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg, 24px);
+}
+
+.ff-drawer__title {
+  font-size: var(--font-size-lg, 18px);
+  font-weight: var(--font-weight-bold, 600);
+}
+
+.ff-drawer__close {
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.ff-drawer__body .ff-filters {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Responsive overrides ──────────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .ff-results__list {
+    grid-template-columns: 1fr;
+  }
+
+  .ff-filters {
+    display: none;
+  }
+
+  .ff-filters-btn {
+    display: flex;
+  }
+}

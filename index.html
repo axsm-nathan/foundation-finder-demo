@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foundation Finder — Dev Fixture</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        font-family: system-ui, sans-serif;
+        background: #f9fafb;
+      }
+      h1 { font-size: 24px; margin-bottom: 16px; color: #111827; }
+    </style>
+  </head>
+  <body>
+    <h1>Foundation Finder — Dev Fixture</h1>
+
+    <!--
+      Mock Webflow CMS collection list.
+      In production, Webflow renders this server-side and the script hides it.
+      Here we include it directly so npm run dev works without Webflow.
+    -->
+    <div style="display:none">
+      <!-- Program 1: Open, with all fields -->
+      <div
+        data-ff-program
+        data-ff-program-id="extra-help-medicare"
+        data-ff-foundation-name="Social Security Administration"
+        data-ff-program-name="Extra Help – Medicare Prescription Drug"
+        data-ff-description="Extra Help is a Medicare program to help people with limited income and resources pay Medicare prescription drug costs. Applicants may qualify for extra help if they have limited income and resources."
+        data-ff-status="Open"
+        data-ff-last-updated="2024-03-15"
+        data-ff-disease-indications="major depressive disorder, treatment-resistant depression"
+        data-ff-insurance-types="Medicare, Medicare Part D"
+        data-ff-grant-amount="10000"
+        data-ff-apply-url="https://www.ssa.gov/extrahelp"
+        data-ff-program-url="https://www.ssa.gov/medicare/prescriptionhelp/"
+        data-ff-foundation-url="https://www.ssa.gov"
+        data-ff-contact-email="extrahelp@ssa.gov"
+        data-ff-contact-phone="1-800-772-1213"
+        data-ff-metadata='[{"label":"Application Method","value":"Online, phone, or in person"},{"label":"Income Limit","value":"135% of federal poverty level"}]'
+      ></div>
+
+      <!-- Program 2: Open, moderate amount -->
+      <div
+        data-ff-program
+        data-ff-program-id="patient-access-network"
+        data-ff-foundation-name="Patient Access Network Foundation"
+        data-ff-program-name="PAN Foundation Co-Pay Assistance"
+        data-ff-description="PAN Foundation provides financial assistance to underinsured patients who need help with out-of-pocket costs for their medications. Support is available for qualifying diagnoses including certain CNS conditions."
+        data-ff-status="Open"
+        data-ff-last-updated="2024-04-01"
+        data-ff-disease-indications="major depressive disorder, narcolepsy, agitation"
+        data-ff-insurance-types="Private Insurance, Medicare"
+        data-ff-grant-amount="4000"
+        data-ff-apply-url=""
+        data-ff-program-url="https://panfoundation.org"
+        data-ff-foundation-url="https://panfoundation.org"
+        data-ff-contact-email="contact@panfoundation.org"
+        data-ff-contact-phone="1-866-316-7263"
+        data-ff-metadata='[{"label":"Award Amount","value":"Up to $4,000 per year"},{"label":"Diagnosis Required","value":"Yes"}]'
+      ></div>
+
+      <!-- Program 3: Closed -->
+      <div
+        data-ff-program
+        data-ff-program-id="healthwell-foundation"
+        data-ff-foundation-name="HealthWell Foundation"
+        data-ff-program-name="HealthWell CNS Assistance Program"
+        data-ff-description="HealthWell provides financial assistance for insurance premiums, co-pays, and deductibles for patients with chronic or life-threatening illnesses. The CNS program is currently closed to new applications."
+        data-ff-status="Closed"
+        data-ff-last-updated="2024-02-28"
+        data-ff-disease-indications="treatment-resistant depression, agitation in Alzheimer's"
+        data-ff-insurance-types="Medicare, Medicaid"
+        data-ff-grant-amount="7500"
+        data-ff-apply-url=""
+        data-ff-program-url="https://healthwellfoundation.org"
+        data-ff-foundation-url="https://healthwellfoundation.org"
+        data-ff-contact-email=""
+        data-ff-contact-phone="1-800-675-8416"
+        data-ff-metadata='[]'
+      ></div>
+
+      <!-- Program 4: Not Yet Open -->
+      <div
+        data-ff-program
+        data-ff-program-id="nami-financial-assistance"
+        data-ff-foundation-name="NAMI"
+        data-ff-program-name="NAMI Mental Health Financial Assistance"
+        data-ff-description="NAMI is developing a new financial assistance program to help patients with mental health conditions cover medication costs. Expected to open enrollment in Q3 2024."
+        data-ff-status="Not Yet Open"
+        data-ff-last-updated="2024-01-10"
+        data-ff-disease-indications="major depressive disorder"
+        data-ff-insurance-types="Private Insurance"
+        data-ff-grant-amount=""
+        data-ff-apply-url=""
+        data-ff-program-url="https://www.nami.org"
+        data-ff-foundation-url="https://www.nami.org"
+        data-ff-contact-email="info@nami.org"
+        data-ff-contact-phone=""
+        data-ff-metadata='[{"label":"Expected Open","value":"Q3 2024"}]'
+      ></div>
+
+      <!-- Program 5: Government Program, no URL -->
+      <div
+        data-ff-program
+        data-ff-program-id="medicaid-extra-coverage"
+        data-ff-foundation-name="Centers for Medicare & Medicaid Services"
+        data-ff-program-name="Medicaid Prescription Drug Coverage"
+        data-ff-description="State Medicaid programs provide comprehensive prescription drug coverage for qualifying low-income individuals and families. Eligibility and covered drugs vary by state."
+        data-ff-status="Government Program"
+        data-ff-last-updated="2024-03-01"
+        data-ff-disease-indications="major depressive disorder, treatment-resistant depression, narcolepsy, agitation in Alzheimer's"
+        data-ff-insurance-types="Medicaid"
+        data-ff-grant-amount=""
+        data-ff-apply-url=""
+        data-ff-program-url=""
+        data-ff-foundation-url=""
+        data-ff-contact-email=""
+        data-ff-contact-phone=""
+        data-ff-metadata='[{"label":"Administered by","value":"State Medicaid agencies"},{"label":"Eligibility","value":"Income and asset based, varies by state"}]'
+      ></div>
+
+      <!-- Program 6: Small amount, private insurance -->
+      <div
+        data-ff-program
+        data-ff-program-id="rxassist-copay"
+        data-ff-foundation-name="RxAssist"
+        data-ff-program-name="RxAssist Co-Pay Card Program"
+        data-ff-description="RxAssist helps patients access patient assistance programs offered by pharmaceutical companies. The co-pay card program reduces out-of-pocket costs at the pharmacy for commercially insured patients."
+        data-ff-status="Open"
+        data-ff-last-updated="2024-04-10"
+        data-ff-disease-indications="major depressive disorder"
+        data-ff-insurance-types="Private Insurance"
+        data-ff-grant-amount="600"
+        data-ff-apply-url="https://www.rxassist.org/apply"
+        data-ff-program-url="https://www.rxassist.org"
+        data-ff-foundation-url="https://www.rxassist.org"
+        data-ff-contact-email=""
+        data-ff-contact-phone="1-800-977-9883"
+        data-ff-metadata='[{"label":"Coverage","value":"Up to $600 per month"},{"label":"Eligibility","value":"Commercially insured patients only"}]'
+      ></div>
+    </div>
+
+    <!-- Foundation Finder mounts here -->
+    <div id="foundation-finder-root"></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
