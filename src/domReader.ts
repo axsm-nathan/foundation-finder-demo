@@ -37,7 +37,7 @@ const VALID_STATUSES = new Set<ProgramStatus>([
 export function readPrograms(): ProgramRecord[] {
   const elements = Array.from(
     document.querySelectorAll<HTMLElement>('[data-ff-program]'),
-  )
+  ).filter((el) => el.id !== 'foundation-finder-root')
 
   const records: ProgramRecord[] = []
 
