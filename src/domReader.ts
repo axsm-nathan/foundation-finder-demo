@@ -160,23 +160,30 @@ function slugify(text: string): string {
 }
 
 /**
- * Hides the CMS collection list wrapper(s). Targets parent containers of
- * [data-ff-program] elements that are not themselves [data-ff-program].
+ * Hides the Webflow CMS collection list wrapper.
+ * Targets the nearest .w-dyn-list ancestor (Webflow's collection list class),
+ * or falls back to walking up 3 levels max to avoid hiding unrelated containers.
  */
 function hideCmsWrappers(): void {
-  // Walk up from the first program element to find the collection list wrapper
   const first = document.querySelector<HTMLElement>('[data-ff-program]')
   if (!first) return
 
-  // The Webflow collection list is typically 2 levels up from the item
-  // (.w-dyn-list > .w-dyn-items > .w-dyn-item [data-ff-program])
-  // We hide the closest ancestor that is NOT a [data-ff-program] element.
+  // Prefer the known Webflow collection list class
+  const dynList = first.closest<HTMLElement>('.w-dyn-list')
+  if (dynList) {
+    dynList.style.display = 'none'
+    return
+  }
+
+  // Fallback: walk up at most 3 levels to find a non-program ancestor
   let wrapper: HTMLElement | null = first.parentElement
-  while (wrapper) {
+  let levels = 0
+  while (wrapper && levels < 3) {
     if (!wrapper.hasAttribute('data-ff-program')) {
       wrapper.style.display = 'none'
       return
     }
     wrapper = wrapper.parentElement
+    levels++
   }
 }
