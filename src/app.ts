@@ -195,28 +195,33 @@ export function mount(rootEl: HTMLElement): void {
       return
     }
 
-    for (const program of results) {
-      const card = GrantCard({
-        program,
-        isExpanded: s.expandedProgramId === program.id,
-        onToggle: (id) => {
-          const wasExpanded = getState().expandedProgramId === id
-          setState('expandedProgramId', wasExpanded ? null : id)
-          if (wasExpanded) {
-            trackEvent('card_collapsed', { program_name: program.programName })
-            announce(`${program.programName} details collapsed`, 'polite')
-          } else {
-            trackEvent('card_expanded', { program_name: program.programName })
-            announce(`${program.programName} details expanded`, 'polite')
-          }
-        },
-        onCtaClick: (url, programName, triggerEl) => {
-          trackEvent('cta_clicked', { program_name: programName, target_url: url })
-          setState('externalLinkTarget', url)
-          setState('externalLinkTrigger', triggerEl)
-        },
-      })
-      listEl.appendChild(card)
+    const charitable = results.filter(p => p.status !== 'Government Program')
+    const government = results.filter(p => p.status === 'Government Program')
+
+    for (const [label, group] of [
+      ['CHARITABLE PATIENT ASSISTANCE FOUNDATIONS', charitable],
+      ['GOVERNMENT PROGRAMS', government],
+    ] as [string, typeof results][]) {
+      if (group.length === 0) continue
+
+      const secHead = document.createElement('div')
+      secHead.className = 'ff-sec-head'
+      secHead.textContent = label
+      listEl.appendChild(secHead)
+
+      const grid = document.createElement('div')
+      grid.className = 'ff-grid'
+      for (const program of group) {
+        grid.appendChild(GrantCard({
+          program,
+          onCtaClick: (url, programName, triggerEl) => {
+            trackEvent('cta_clicked', { program_name: programName, target_url: url })
+            setState('externalLinkTarget', url)
+            setState('externalLinkTrigger', triggerEl)
+          },
+        }))
+      }
+      listEl.appendChild(grid)
     }
   }
 

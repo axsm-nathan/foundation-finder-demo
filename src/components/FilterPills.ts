@@ -30,26 +30,18 @@ export function FilterPills(props: FilterPillsProps): HTMLElement {
   pills.className = 'ff-filter-group__pills'
 
   // "All Programs" pill
-  const allBtn = document.createElement('button')
-  allBtn.type = 'button'
-  allBtn.className = hasActiveFilters ? 'ff-pill' : 'ff-pill ff-pill--active'
-  allBtn.setAttribute('aria-pressed', hasActiveFilters ? 'false' : 'true')
-  allBtn.textContent = `All Programs ${totalCount}`
+  const allBtn = makePill('All Programs', totalCount, !hasActiveFilters)
   allBtn.addEventListener('click', () => props.onClearAll())
   pills.appendChild(allBtn)
 
-  // Status pills (from grantStatuses dimension)
+  // Status pills
   const statusDim = props.dimensions.find((d) => d.id === 'grantStatuses')
   if (statusDim) {
     for (const value of statusDim.values) {
       const count = statuses.get(value) ?? 0
       if (count === 0) continue
       const active = props.activeFilters.grantStatuses.has(value)
-      const btn = document.createElement('button')
-      btn.type = 'button'
-      btn.className = active ? 'ff-pill ff-pill--active' : 'ff-pill'
-      btn.setAttribute('aria-pressed', active ? 'true' : 'false')
-      btn.textContent = `${formatLabel('grantStatuses', value)} ${count}`
+      const btn = makePill(formatLabel('grantStatuses', value), count, active)
       btn.addEventListener('click', () => props.onToggle('grantStatuses', value))
       pills.appendChild(btn)
     }
@@ -62,11 +54,7 @@ export function FilterPills(props: FilterPillsProps): HTMLElement {
       const count = insuranceTypes.get(value) ?? 0
       if (count === 0) continue
       const active = props.activeFilters.insuranceTypes.has(value)
-      const btn = document.createElement('button')
-      btn.type = 'button'
-      btn.className = active ? 'ff-pill ff-pill--active' : 'ff-pill'
-      btn.setAttribute('aria-pressed', active ? 'true' : 'false')
-      btn.textContent = `${formatLabel('insuranceTypes', value)} ${count}`
+      const btn = makePill(formatLabel('insuranceTypes', value), count, active)
       btn.addEventListener('click', () => props.onToggle('insuranceTypes', value))
       pills.appendChild(btn)
     }
@@ -74,6 +62,21 @@ export function FilterPills(props: FilterPillsProps): HTMLElement {
 
   container.appendChild(pills)
   return container
+}
+
+function makePill(labelText: string, count: number, active: boolean): HTMLButtonElement {
+  const btn = document.createElement('button')
+  btn.type = 'button'
+  btn.className = active ? 'ff-pill ff-pill--active' : 'ff-pill'
+  btn.setAttribute('aria-pressed', active ? 'true' : 'false')
+  btn.textContent = labelText
+
+  const badge = document.createElement('span')
+  badge.className = 'ff-pill-count'
+  badge.textContent = String(count)
+  btn.appendChild(badge)
+
+  return btn
 }
 
 function formatLabel(dim: keyof FilterState, value: string): string {
