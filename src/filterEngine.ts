@@ -73,6 +73,35 @@ function rangeMatches(key: string, amount: number): boolean {
 }
 
 // ---------------------------------------------------------------------------
+// Count programs per filter value / status (for pill badges)
+// ---------------------------------------------------------------------------
+
+export function computeFilterCounts(
+  programs: readonly ProgramRecord[],
+): { statuses: Map<string, number>; insuranceTypes: Map<string, number> } {
+  const statuses = new Map<string, number>()
+  const insuranceTypes = new Map<string, number>()
+  for (const p of programs) {
+    const s = p.status.toLowerCase()
+    statuses.set(s, (statuses.get(s) ?? 0) + 1)
+    for (const t of p.insuranceTypes) {
+      insuranceTypes.set(t, (insuranceTypes.get(t) ?? 0) + 1)
+    }
+  }
+  return { statuses, insuranceTypes }
+}
+
+export function computeStatusCounts(
+  programs: readonly ProgramRecord[],
+): Map<ProgramStatus, number> {
+  const counts = new Map<ProgramStatus, number>()
+  for (const p of programs) {
+    counts.set(p.status, (counts.get(p.status) ?? 0) + 1)
+  }
+  return counts
+}
+
+// ---------------------------------------------------------------------------
 // Derive dynamic filter dimension values from the loaded programs
 // ---------------------------------------------------------------------------
 

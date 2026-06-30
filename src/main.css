@@ -43,6 +43,7 @@
   color: var(--color-text, #111827);
   line-height: 1.5;
   box-sizing: border-box;
+  position: relative;
 }
 
 .ff-root *,
@@ -445,6 +446,40 @@
 
 .ff-modal__footer--row {
   gap: var(--spacing-sm, 8px);
+}
+
+.ff-modal--scoped {
+  position: absolute;
+  inset: 0;
+}
+
+/* ── Status summary row ────────────────────────────────────────────────────── */
+
+.ff-status-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md, 16px);
+  margin-bottom: var(--spacing-md, 16px);
+  font-size: var(--font-size-base, 16px);
+  font-weight: var(--font-weight-bold, 600);
+}
+
+.ff-status-summary__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ff-status-summary__item--open   { color: var(--ff-status-open); }
+.ff-status-summary__item--closed { color: var(--ff-status-closed); }
+.ff-status-summary__item--pending { color: var(--ff-status-pending); }
+.ff-status-summary__item--government { color: var(--ff-status-government); }
+
+/* ── Show label (above flat filter pills) ──────────────────────────────────── */
+
+.ff-show-label {
+  display: block;
+  margin-bottom: var(--spacing-sm, 8px);
 }
 
 /* ── Filter Drawer (mobile) ────────────────────────────────────────────────── */

@@ -12,6 +12,7 @@ import {
   subscribe,
   toggleFilter,
   acknowledgeDisclaimer,
+  clearFilters,
 } from './stateManager'
 import { computeResults, buildFilterDimensions } from './filterEngine'
 import { debounce } from './debounce'
@@ -24,6 +25,7 @@ import { FilterDrawer } from './components/FilterDrawer'
 import { GrantCard } from './components/GrantCard'
 import { ExternalLinkModal } from './components/ExternalLinkModal'
 import { EmptyState } from './components/EmptyState'
+import { StatusSummary } from './components/StatusSummary'
 
 export function mount(rootEl: HTMLElement): void {
   rootEl.setAttribute('role', 'main')
@@ -57,11 +59,13 @@ export function mount(rootEl: HTMLElement): void {
   const filterPillsEl = FilterPills({
     dimensions,
     activeFilters: state.filters,
+    allPrograms: state.allPrograms,
     onToggle: (dim, value) => {
       toggleFilter(dim, value)
       const results = computeResults(getState().allPrograms, getState())
       announce(`${results.length} program${results.length !== 1 ? 's' : ''} found`, 'polite')
     },
+    onClearAll: clearFilters,
   })
 
   // Mobile filter button
@@ -74,6 +78,7 @@ export function mount(rootEl: HTMLElement): void {
     const drawerPills = FilterPills({
       dimensions,
       activeFilters: getState().filters,
+      allPrograms: getState().allPrograms,
       onToggle: (dim, value) => {
         toggleFilter(dim, value)
         const results = computeResults(getState().allPrograms, getState())
@@ -82,6 +87,7 @@ export function mount(rootEl: HTMLElement): void {
           'polite',
         )
       },
+      onClearAll: clearFilters,
     })
     const drawer = FilterDrawer({
       children: drawerPills,
@@ -97,6 +103,10 @@ export function mount(rootEl: HTMLElement): void {
   controlsSection.appendChild(filterBtn)
   controlsSection.appendChild(filterPillsEl)
   rootEl.appendChild(controlsSection)
+
+  // ── Status summary row ────────────────────────────────────────────────────
+  let statusSummaryEl = StatusSummary({ programs: [...state.allPrograms] })
+  rootEl.appendChild(statusSummaryEl)
 
   // ── Results section ───────────────────────────────────────────────────────
   const resultsSection = document.createElement('section')
@@ -137,7 +147,7 @@ export function mount(rootEl: HTMLElement): void {
       disclaimerEl = DisclaimerModal({
         onAcknowledge: acknowledgeDisclaimer,
       })
-      document.body.appendChild(disclaimerEl)
+      rootEl.appendChild(disclaimerEl)
     } else if (s.phase !== 'disclaimer' && disclaimerEl) {
       disclaimerEl.remove()
       disclaimerEl = null
@@ -173,6 +183,10 @@ export function mount(rootEl: HTMLElement): void {
     const results = computeResults(s.allPrograms, s)
     const countText = `${results.length} program${results.length !== 1 ? 's' : ''} found`
     countEl.textContent = countText
+
+    const updatedSummary = StatusSummary({ programs: results })
+    statusSummaryEl.replaceWith(updatedSummary)
+    statusSummaryEl = updatedSummary
 
     listEl.innerHTML = ''
 
@@ -214,6 +228,7 @@ export function mount(rootEl: HTMLElement): void {
     const updated = FilterPills({
       dimensions,
       activeFilters: s.filters,
+      allPrograms: s.allPrograms,
       onToggle: (dim, value) => {
         toggleFilter(dim, value)
         const results = computeResults(getState().allPrograms, getState())
@@ -222,6 +237,7 @@ export function mount(rootEl: HTMLElement): void {
           'polite',
         )
       },
+      onClearAll: clearFilters,
     })
     existing.replaceWith(updated)
   }

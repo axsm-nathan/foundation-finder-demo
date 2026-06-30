@@ -96,6 +96,14 @@ export function acknowledgeDisclaimer(): void {
   setState('phase', 'ready')
 }
 
+export function clearFilters(): void {
+  setState('filters', {
+    insuranceTypes: new Set(),
+    grantStatuses: new Set(),
+    supportAmounts: new Set(),
+  })
+}
+
 export function resetState(): void {
   state = {
     ...state,

@@ -6,7 +6,7 @@ export interface DisclaimerModalProps {
 
 export function DisclaimerModal(props: DisclaimerModalProps): HTMLElement {
   const overlay = document.createElement('div')
-  overlay.className = 'ff-modal'
+  overlay.className = 'ff-modal ff-modal--scoped'
   overlay.setAttribute('role', 'dialog')
   overlay.setAttribute('aria-modal', 'true')
   overlay.setAttribute('aria-labelledby', 'ff-disclaimer-title')
