@@ -165,7 +165,7 @@ function slugify(text: string): string {
  * or falls back to walking up 3 levels max to avoid hiding unrelated containers.
  */
 function hideCmsWrappers(): void {
-  const first = document.querySelector<HTMLElement>('[data-ff-program]')
+  const first = document.querySelector<HTMLElement>('[data-ff-program]:not(#foundation-finder-root)')
   if (!first) return
 
   // Prefer the known Webflow collection list class
