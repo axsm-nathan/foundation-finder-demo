@@ -11,6 +11,11 @@
   --ff-status-pending:    var(--color-warning, #b45309);
   --ff-status-government: var(--color-info, #1d4ed8);
 
+  --ff-status-chip-open: var(rgba(26, 92, 58, 0.8));
+  --ff-status-chip-closed: var(rgba(139, 58, 30, 0.8));
+  --ff-status-chip-pending: var(rgba(107, 114, 128, 0.8));
+  --ff-status-chip-government: var(rgba(30, 58, 107, 0.8));
+
   --ff-pill-active-bg:       var(--color-primary, #0f4c8a);
   --ff-pill-active-text:     var(--color-background, #ffffff);
   --ff-pill-inactive-bg:     transparent;
@@ -37,13 +42,22 @@
 
 /* ── Root ──────────────────────────────────────────────────────────────────── */
 
+body {
+  background: rgb(244, 241, 235);
+}
+
 .ff-root {
+  --ff-widget-height: 700px;
   font-family: var(--font-family-base, system-ui, sans-serif);
   font-size: var(--font-size-base, 16px);
   color: var(--color-text, #111827);
   line-height: 1.5;
   box-sizing: border-box;
   position: relative;
+  height: var(--ff-widget-height);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .ff-root *,
@@ -65,6 +79,7 @@
   gap: var(--spacing-md, 16px);
   align-items: flex-start;
   margin-bottom: var(--spacing-lg, 24px);
+  flex-shrink: 0;
 }
 
 /* ── Search ────────────────────────────────────────────────────────────────── */
@@ -104,9 +119,13 @@
 /* ── Filters ───────────────────────────────────────────────────────────────── */
 
 .ff-filters {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(221, 216, 208);
+  border-radius: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-md, 16px);
+  padding: 14px 18px 14px 18px;
   width: 100%;
 }
 
@@ -230,6 +249,12 @@
 }
 
 /* ── Results ───────────────────────────────────────────────────────────────── */
+
+.ff-results {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
 
 .ff-results__count {
   font-size: var(--font-size-sm, 14px);
@@ -508,12 +533,34 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  padding: 10px;
+  border-radius: 10px 12px;
 }
 
-.ff-status-summary__item--open   { color: var(--ff-status-open); }
-.ff-status-summary__item--closed { color: var(--ff-status-closed); }
-.ff-status-summary__item--pending { color: var(--ff-status-pending); }
-.ff-status-summary__item--government { color: var(--ff-status-government); }
+/* --ff-status-chip-open: var(rgba(26, 92, 58, 0.8));
+  --ff-status-chip-closed: var(rgba(139, 58, 30, 0.8));
+  --ff-status-chip-pending: var(rgba(107, 114, 128, 0.8));
+  --ff-status-chip-government: var(rgba(30, 58, 107, 0.8)); */
+
+.ff-status-summary__item--open   { 
+  background-color: rgb(228, 243, 235);
+  color: var(--ff-status-open); 
+}
+
+.ff-status-summary__item--closed { 
+  background-color: rgb(250, 234, 228);
+  color: var(--ff-status-closed); 
+}
+
+.ff-status-summary__item--pending { 
+  background-color: #fdf4dc;
+  color: var(--ff-status-pending); 
+}
+
+.ff-status-summary__item--government { 
+  background-color: rgb(232, 238, 249);
+  color: var(--ff-status-government); 
+}
 
 /* ── Show label (above flat filter pills) ──────────────────────────────────── */
 
