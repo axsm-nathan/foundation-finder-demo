@@ -47,14 +47,13 @@ body {
 }
 
 .ff-root {
-  --ff-widget-height: 2400px;
   font-family: var(--font-family-base, system-ui, sans-serif);
   font-size: var(--font-size-base, 16px);
   color: var(--color-text, #111827);
   line-height: 1.5;
   box-sizing: border-box;
   position: relative;
-  height: var(--ff-widget-height);
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
