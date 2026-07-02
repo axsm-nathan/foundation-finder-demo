@@ -42,10 +42,6 @@
 
 /* ── Root ──────────────────────────────────────────────────────────────────── */
 
-body {
-  background: rgb(244, 241, 235);
-}
-
 .ff-root {
   font-family: var(--font-family-base, system-ui, sans-serif);
   font-size: var(--font-size-base, 16px);
@@ -250,9 +246,13 @@ body {
 /* ── Results ───────────────────────────────────────────────────────────────── */
 
 .ff-results {
+  background: rgba(244, 241, 235, 0.8);
+  border-radius: 10px;
+  border: 1px solid black;
   flex: 1;
   overflow-y: auto;
   min-height: 0;
+  padding: 10px 20px;
 }
 
 .ff-results__count {
