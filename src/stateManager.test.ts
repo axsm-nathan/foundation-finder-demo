@@ -43,7 +43,8 @@ describe('initState', () => {
   })
 
   it('sets phase to ready when disclaimer already acknowledged', () => {
-    sessionStorage.setItem('ff-disclaimer-v1', '1')
+    // TODO: removing session storage
+    // sessionStorage.setItem('ff-disclaimer-v1', '1')
     initState(programs)
     expect(getState().phase).toBe('ready')
   })

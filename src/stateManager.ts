@@ -87,11 +87,12 @@ export function toggleFilter(dim: keyof FilterState, value: string): void {
 }
 
 export function acknowledgeDisclaimer(): void {
-  try {
-    sessionStorage.setItem(DISCLAIMER_KEY, '1')
-  } catch {
-    // ignore — we'll show the disclaimer again next load
-  }
+  // TODO: removing session storage
+  // try {
+  //   sessionStorage.setItem(DISCLAIMER_KEY, '1')
+  // } catch {
+  //   // ignore — we'll show the disclaimer again next load
+  // }
   trackEvent('disclaimer_accepted')
   setState('phase', 'ready')
 }
