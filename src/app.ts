@@ -69,11 +69,21 @@ export function mount(rootEl: HTMLElement): void {
   })
 
   // Mobile filter button
+  let activeDrawerOverlay: HTMLElement | null = null
+
   const filterBtn = document.createElement('button')
   filterBtn.type = 'button'
   filterBtn.className = 'ff-btn ff-filters-btn'
   filterBtn.setAttribute('aria-label', 'Open filters')
   filterBtn.textContent = 'Filters'
+
+  const mobileClearBtn = document.createElement('button')
+  mobileClearBtn.type = 'button'
+  mobileClearBtn.className = 'ff-clear-btn ff-mobile-clear-btn'
+  mobileClearBtn.setAttribute('aria-label', 'Clear all filters')
+  mobileClearBtn.textContent = 'Clear filters'
+  mobileClearBtn.addEventListener('click', () => clearFilters())
+
   filterBtn.addEventListener('click', () => {
     const drawerPills = FilterPills({
       dimensions,
@@ -92,15 +102,19 @@ export function mount(rootEl: HTMLElement): void {
     const drawer = FilterDrawer({
       children: drawerPills,
       triggerEl: filterBtn,
+      onClearAll: clearFilters,
       onClose: () => {
         document.body.removeChild(drawer)
+        activeDrawerOverlay = null
       },
     })
+    activeDrawerOverlay = drawer
     document.body.appendChild(drawer)
   })
 
   controlsSection.appendChild(searchBar)
   controlsSection.appendChild(filterBtn)
+  controlsSection.appendChild(mobileClearBtn)
   controlsSection.appendChild(filterPillsEl)
   rootEl.appendChild(controlsSection)
 
@@ -113,6 +127,8 @@ export function mount(rootEl: HTMLElement): void {
   resultsSection.setAttribute('aria-label', 'Program results')
   resultsSection.className = 'ff-results'
 
+  let firstCardObserver: IntersectionObserver | null = null
+
   // Results count announcement region (not the sr-only one — this is visible)
   const countEl = document.createElement('p')
   countEl.className = 'ff-results__count'
@@ -122,8 +138,16 @@ export function mount(rootEl: HTMLElement): void {
   const listEl = document.createElement('div')
   listEl.className = 'ff-results__list'
 
+  const scrollTopBtn = document.createElement('button')
+  scrollTopBtn.type = 'button'
+  scrollTopBtn.className = 'ff-scroll-top'
+  scrollTopBtn.setAttribute('aria-label', 'Scroll to top')
+  scrollTopBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>`
+  scrollTopBtn.addEventListener('click', () => rootEl.scrollIntoView({ behavior: 'smooth' }))
+
   resultsSection.appendChild(countEl)
   resultsSection.appendChild(listEl)
+  resultsSection.appendChild(scrollTopBtn)
   rootEl.appendChild(resultsSection)
 
   // ── Disclaimer modal ──────────────────────────────────────────────────────
@@ -138,6 +162,12 @@ export function mount(rootEl: HTMLElement): void {
     renderExternalLinkModal(s)
     renderResults(s)
     renderFilterPills(s)
+    renderDrawerPills(s)
+    const hasFilters =
+      s.filters.insuranceTypes.size > 0 ||
+      s.filters.grantStatuses.size > 0 ||
+      s.filters.supportAmounts.size > 0
+    mobileClearBtn.classList.toggle('ff-mobile-clear-btn--visible', hasFilters)
   })
 
   // ── Renderers ─────────────────────────────────────────────────────────────
@@ -189,6 +219,8 @@ export function mount(rootEl: HTMLElement): void {
     statusSummaryEl = updatedSummary
 
     listEl.innerHTML = ''
+    firstCardObserver?.disconnect()
+    scrollTopBtn.classList.remove('ff-scroll-top--visible')
 
     if (results.length === 0) {
       listEl.appendChild(EmptyState())
@@ -223,11 +255,44 @@ export function mount(rootEl: HTMLElement): void {
       }
       listEl.appendChild(grid)
     }
+
+    const firstCard = listEl.querySelector<HTMLElement>('.ff-card')
+    if (firstCard) {
+      firstCardObserver = new IntersectionObserver(
+        ([entry]) => {
+          scrollTopBtn.classList.toggle('ff-scroll-top--visible', !entry!.isIntersecting)
+        },
+        { threshold: 0 },
+      )
+      firstCardObserver.observe(firstCard)
+    }
   }
 
   function renderFilterPills(s: AppState): void {
     // Replace inline filter pills to reflect new active state
     const existing = controlsSection.querySelector('.ff-filters')
+    if (!existing) return
+
+    const updated = FilterPills({
+      dimensions,
+      activeFilters: s.filters,
+      allPrograms: s.allPrograms,
+      onToggle: (dim, value) => {
+        toggleFilter(dim, value)
+        const results = computeResults(getState().allPrograms, getState())
+        announce(
+          `${results.length} program${results.length !== 1 ? 's' : ''} found`,
+          'polite',
+        )
+      },
+      onClearAll: clearFilters,
+    })
+    existing.replaceWith(updated)
+  }
+
+  function renderDrawerPills(s: AppState): void {
+    if (!activeDrawerOverlay) return
+    const existing = activeDrawerOverlay.querySelector('.ff-filters')
     if (!existing) return
 
     const updated = FilterPills({

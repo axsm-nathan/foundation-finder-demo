@@ -21,10 +21,15 @@ export function FilterPills(props: FilterPillsProps): HTMLElement {
   const container = document.createElement('div')
   container.className = 'ff-filters'
 
+  const filterHeader = document.createElement('div')
+  filterHeader.className = 'ff-filters__header'
+
   const label = document.createElement('span')
   label.className = 'ff-filter-group__label ff-show-label'
   label.textContent = 'SHOW'
-  container.appendChild(label)
+  filterHeader.appendChild(label)
+
+  container.appendChild(filterHeader)
 
   const pills = document.createElement('div')
   pills.className = 'ff-filter-group__pills'
@@ -69,7 +74,10 @@ function makePill(labelText: string, count: number, active: boolean): HTMLButton
   btn.type = 'button'
   btn.className = active ? 'ff-pill ff-pill--active' : 'ff-pill'
   btn.setAttribute('aria-pressed', active ? 'true' : 'false')
-  btn.textContent = labelText
+  const labelSpan = document.createElement('span')
+  labelSpan.className = 'ff-pill__label'
+  labelSpan.textContent = labelText
+  btn.appendChild(labelSpan)
 
   const badge = document.createElement('span')
   badge.className = 'ff-pill-count'
