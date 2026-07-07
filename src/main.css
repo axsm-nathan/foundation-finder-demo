@@ -49,10 +49,9 @@
   line-height: 1.5;
   box-sizing: border-box;
   position: relative;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .ff-root *,
@@ -84,6 +83,7 @@
   flex-direction: column;
   gap: 4px;
   flex: 1 1 300px;
+  min-width: 0;
 }
 
 .ff-search__label {
@@ -109,6 +109,24 @@
   outline: none;
   border-color: var(--color-primary, #0f4c8a);
   box-shadow: var(--ff-focus-ring);
+}
+
+/* ── Clear filters button ──────────────────────────────────────────────────── */
+
+.ff-clear-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-primary, #0f4c8a);
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.ff-clear-btn:hover {
+  color: var(--color-primary-light, #1d6bb8);
 }
 
 /* ── Filters ───────────────────────────────────────────────────────────────── */
@@ -145,7 +163,8 @@
 }
 
 /* Mobile: show filter button, hide inline pills */
-.ff-filters-btn {
+.ff-filters-btn,
+.ff-btn.ff-filters-btn {
   display: none;
   align-self: flex-end;
 }
@@ -156,6 +175,22 @@
 
 .ff-root--mobile .ff-filters {
   display: none;
+}
+
+/* Mobile clear-filters button — only shown when filters are active */
+.ff-mobile-clear-btn {
+  display: none;
+  align-self: center;
+}
+
+.ff-root--mobile .ff-mobile-clear-btn.ff-mobile-clear-btn--visible {
+  display: inline;
+}
+
+@media (max-width: 767px) {
+  .ff-filters {
+    width: 100%;
+  }
 }
 
 /* ── Pills ─────────────────────────────────────────────────────────────────── */
@@ -171,8 +206,15 @@
   cursor: pointer;
   min-width: 44px;
   min-height: 44px;
-  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
   transition: background 120ms, color 120ms, border-color 120ms;
+}
+
+.ff-pill__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ff-pill--active {
@@ -246,13 +288,7 @@
 /* ── Results ───────────────────────────────────────────────────────────────── */
 
 .ff-results {
-  background: rgba(244, 241, 235, 0.8);
-  border-radius: 10px;
-  border: 1px solid black;
   flex: 1;
-  overflow-y: auto;
-  min-height: 0;
-  padding: 10px 20px;
 }
 
 .ff-results__count {
@@ -513,8 +549,37 @@
 }
 
 .ff-modal--scoped {
-  position: absolute;
+  position: fixed;
   inset: 0;
+}
+
+.ff-scroll-top {
+  display: none;
+  position: fixed;
+  bottom: var(--spacing-lg, 24px);
+  right: var(--spacing-lg, 24px);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border, #d1d5db);
+  background: var(--color-background, #ffffff);
+  color: var(--color-text, #111827);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+}
+
+.ff-scroll-top svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 767px) {
+  .ff-scroll-top--visible {
+    display: flex;
+  }
 }
 
 /* ── Status summary row ────────────────────────────────────────────────────── */
@@ -572,11 +637,19 @@
 
 .ff-drawer-overlay {
   position: fixed;
+  width: 100%;
   inset: 0;
   background: var(--ff-modal-overlay);
   z-index: 9998;
   display: flex;
   align-items: flex-end;
+  box-sizing: border-box;
+}
+
+.ff-drawer-overlay *,
+.ff-drawer-overlay *::before,
+.ff-drawer-overlay *::after {
+  box-sizing: border-box;
 }
 
 .ff-drawer {
@@ -593,6 +666,19 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-lg, 24px);
+}
+
+.ff-drawer__title-group {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-md, 16px);
+}
+
+.ff-filters__header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm, 8px);
+  width: 100%;
 }
 
 .ff-drawer__title {
@@ -622,11 +708,11 @@
     grid-template-columns: 1fr;
   }
 
-  .ff-filters {
-    display: none;
+  .ff-card__top {
+    flex-direction: column;
   }
 
-  .ff-filters-btn {
-    display: flex;
+  .ff-pill__label {
+    max-width: 180px;
   }
 }

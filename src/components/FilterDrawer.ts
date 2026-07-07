@@ -3,6 +3,7 @@ import { activateFocusTrap } from '../focusTrap'
 export interface FilterDrawerProps {
   children: HTMLElement
   onClose: () => void
+  onClearAll: () => void
   triggerEl: HTMLElement
 }
 
@@ -29,7 +30,18 @@ export function FilterDrawer(props: FilterDrawerProps): HTMLElement {
   closeBtn.setAttribute('aria-label', 'Close filters')
   closeBtn.textContent = '✕'
 
-  header.appendChild(title)
+  const drawerClearBtn = document.createElement('button')
+  drawerClearBtn.type = 'button'
+  drawerClearBtn.className = 'ff-clear-btn'
+  drawerClearBtn.textContent = 'Clear filters'
+  drawerClearBtn.addEventListener('click', () => props.onClearAll())
+
+  const titleGroup = document.createElement('div')
+  titleGroup.className = 'ff-drawer__title-group'
+  titleGroup.appendChild(title)
+  titleGroup.appendChild(drawerClearBtn)
+
+  header.appendChild(titleGroup)
   header.appendChild(closeBtn)
 
   const body = document.createElement('div')
