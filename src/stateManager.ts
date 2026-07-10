@@ -5,7 +5,7 @@
  * design.md §5
  */
 
-import type { AppState, FilterState, ProgramRecord } from './types'
+import type { AppState, FilterState, ProgramRecord, SortState } from './types'
 import { trackEvent } from './analytics'
 
 const DISCLAIMER_KEY = 'ff-disclaimer-v1'
@@ -16,11 +16,14 @@ const emptyFilters = (): FilterState => ({
   supportAmounts: new Set<string>(),
 })
 
+const defaultSort = (): SortState => ({ field: null, direction: 'desc' })
+
 let state: AppState = {
   allPrograms: [],
   query: '',
   debouncedQuery: '',
   filters: emptyFilters(),
+  sort: defaultSort(),
   expandedProgramId: null,
   phase: 'loading',
   errorMessage: null,
@@ -49,6 +52,7 @@ export function initState(programs: ProgramRecord[]): void {
     query: '',
     debouncedQuery: '',
     filters: emptyFilters(),
+    sort: defaultSort(),
     expandedProgramId: null,
     phase: disclaimerSeen ? 'ready' : 'disclaimer',
     errorMessage: null,
@@ -105,12 +109,17 @@ export function clearFilters(): void {
   })
 }
 
+export function setSort(field: SortState['field'], direction: SortState['direction']): void {
+  setState('sort', { field, direction })
+}
+
 export function resetState(): void {
   state = {
     ...state,
     query: '',
     debouncedQuery: '',
     filters: emptyFilters(),
+    sort: defaultSort(),
     expandedProgramId: null,
   }
   notify()
