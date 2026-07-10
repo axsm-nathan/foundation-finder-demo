@@ -162,7 +162,7 @@ describe('computeResults', () => {
   ]
 
   it('returns all programs when no filters or query', () => {
-    const results = computeResults(programs, { debouncedQuery: '', filters: emptyFilters() })
+    const results = computeResults(programs, { debouncedQuery: '', filters: emptyFilters(), sort: { field: null, direction: 'desc' } })
     expect(results).toHaveLength(3)
   })
 
@@ -174,6 +174,7 @@ describe('computeResults', () => {
         insuranceTypes: new Set(['medicare']),
         grantStatuses: new Set(['open']),
       },
+      sort: { field: null, direction: 'desc' },
     })
     expect(results.map((r) => r.id)).toEqual(['a'])
   })
@@ -185,12 +186,13 @@ describe('computeResults', () => {
         ...emptyFilters(),
         insuranceTypes: new Set(['medicare', 'medicaid']),
       },
+      sort: { field: null, direction: 'desc' },
     })
     expect(results.map((r) => r.id).sort()).toEqual(['a', 'c'])
   })
 
   it('preserves order', () => {
-    const results = computeResults(programs, { debouncedQuery: '', filters: emptyFilters() })
+    const results = computeResults(programs, { debouncedQuery: '', filters: emptyFilters(), sort: { field: null, direction: 'desc' } })
     expect(results.map((r) => r.id)).toEqual(['a', 'b', 'c'])
   })
 
@@ -202,6 +204,7 @@ describe('computeResults', () => {
     const results = computeResults(p, {
       debouncedQuery: 'alpha',
       filters: { ...emptyFilters(), grantStatuses: new Set(['open']) },
+      sort: { field: null, direction: 'desc' },
     })
     expect(results.map((r) => r.id)).toEqual(['x'])
   })

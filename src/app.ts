@@ -13,6 +13,7 @@ import {
   toggleFilter,
   acknowledgeDisclaimer,
   clearFilters,
+  setSort,
 } from './stateManager'
 import { computeResults, buildFilterDimensions } from './filterEngine'
 import { debounce } from './debounce'
@@ -22,6 +23,7 @@ import { DisclaimerModal } from './components/DisclaimerModal'
 import { SearchBar } from './components/SearchBar'
 import { FilterPills } from './components/FilterPills'
 import { FilterDrawer } from './components/FilterDrawer'
+import { SortButton } from './components/SortPopover'
 import { GrantCard } from './components/GrantCard'
 import { ExternalLinkModal } from './components/ExternalLinkModal'
 import { EmptyState } from './components/EmptyState'
@@ -112,7 +114,14 @@ export function mount(rootEl: HTMLElement): void {
     document.body.appendChild(drawer)
   })
 
+  let sortWrapperEl = SortButton({
+    sort: state.sort,
+    onSort: (field, direction) => setSort(field, direction),
+  })
+  sortWrapperEl.className = 'ff-sort-wrapper'
+
   controlsSection.appendChild(searchBar)
+  controlsSection.appendChild(sortWrapperEl)
   controlsSection.appendChild(filterBtn)
   controlsSection.appendChild(mobileClearBtn)
   controlsSection.appendChild(filterPillsEl)
@@ -163,6 +172,7 @@ export function mount(rootEl: HTMLElement): void {
     renderResults(s)
     renderFilterPills(s)
     renderDrawerPills(s)
+    renderSortButton(s)
     const hasFilters =
       s.filters.insuranceTypes.size > 0 ||
       s.filters.grantStatuses.size > 0 ||
@@ -310,5 +320,14 @@ export function mount(rootEl: HTMLElement): void {
       onClearAll: clearFilters,
     })
     existing.replaceWith(updated)
+  }
+
+  function renderSortButton(s: AppState): void {
+    const updated = SortButton({
+      sort: s.sort,
+      onSort: (field, direction) => setSort(field, direction),
+    })
+    sortWrapperEl.replaceWith(updated)
+    sortWrapperEl = updated
   }
 }

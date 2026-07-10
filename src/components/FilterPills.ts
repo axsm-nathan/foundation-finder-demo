@@ -12,7 +12,6 @@ export interface FilterPillsProps {
 
 export function FilterPills(props: FilterPillsProps): HTMLElement {
   const { statuses, insuranceTypes } = computeFilterCounts(props.allPrograms)
-  const totalCount = props.allPrograms.length
   const hasActiveFilters =
     props.activeFilters.insuranceTypes.size > 0 ||
     props.activeFilters.grantStatuses.size > 0 ||
@@ -24,22 +23,33 @@ export function FilterPills(props: FilterPillsProps): HTMLElement {
   const filterHeader = document.createElement('div')
   filterHeader.className = 'ff-filters__header'
 
-  const label = document.createElement('span')
-  label.className = 'ff-filter-group__label ff-show-label'
-  label.textContent = 'SHOW'
-  filterHeader.appendChild(label)
+  if (hasActiveFilters) {
+    const clearBtn = document.createElement('button')
+    clearBtn.type = 'button'
+    clearBtn.className = 'ff-clear-btn'
+    clearBtn.textContent = 'Clear filters'
+    clearBtn.addEventListener('click', () => props.onClearAll())
+    filterHeader.appendChild(clearBtn)
+  }
 
   container.appendChild(filterHeader)
 
-  const pills = document.createElement('div')
-  pills.className = 'ff-filter-group__pills'
+  // ── Status group ──────────────────────────────────────────────────────────
+  const statusGroup = document.createElement('div')
+  statusGroup.className = 'ff-filter-group'
 
-  // "All Programs" pill
-  const allBtn = makePill('All Programs', totalCount, !hasActiveFilters)
+  const statusLabel = document.createElement('span')
+  statusLabel.className = 'ff-filter-group__label'
+  statusLabel.textContent = 'STATUS'
+  statusGroup.appendChild(statusLabel)
+
+  const statusPills = document.createElement('div')
+  statusPills.className = 'ff-filter-group__pills'
+
+  const allBtn = makePill('All Programs', props.allPrograms.length, !hasActiveFilters)
   allBtn.addEventListener('click', () => props.onClearAll())
-  pills.appendChild(allBtn)
+  statusPills.appendChild(allBtn)
 
-  // Status pills
   const statusDim = props.dimensions.find((d) => d.id === 'grantStatuses')
   if (statusDim) {
     for (const value of statusDim.values) {
@@ -48,24 +58,40 @@ export function FilterPills(props: FilterPillsProps): HTMLElement {
       const active = props.activeFilters.grantStatuses.has(value)
       const btn = makePill(formatLabel('grantStatuses', value), count, active)
       btn.addEventListener('click', () => props.onToggle('grantStatuses', value))
-      pills.appendChild(btn)
+      statusPills.appendChild(btn)
     }
   }
 
-  // Insurance type pills
+  statusGroup.appendChild(statusPills)
+  container.appendChild(statusGroup)
+
+  // ── Insurance group ───────────────────────────────────────────────────────
   const insuranceDim = props.dimensions.find((d) => d.id === 'insuranceTypes')
-  if (insuranceDim) {
+  if (insuranceDim && insuranceDim.values.some((v) => (insuranceTypes.get(v) ?? 0) > 0)) {
+    const insuranceGroup = document.createElement('div')
+    insuranceGroup.className = 'ff-filter-group'
+
+    const insuranceLabel = document.createElement('span')
+    insuranceLabel.className = 'ff-filter-group__label'
+    insuranceLabel.textContent = 'INSURANCE'
+    insuranceGroup.appendChild(insuranceLabel)
+
+    const insurancePills = document.createElement('div')
+    insurancePills.className = 'ff-filter-group__pills'
+
     for (const value of insuranceDim.values) {
       const count = insuranceTypes.get(value) ?? 0
       if (count === 0) continue
       const active = props.activeFilters.insuranceTypes.has(value)
       const btn = makePill(formatLabel('insuranceTypes', value), count, active)
       btn.addEventListener('click', () => props.onToggle('insuranceTypes', value))
-      pills.appendChild(btn)
+      insurancePills.appendChild(btn)
     }
+
+    insuranceGroup.appendChild(insurancePills)
+    container.appendChild(insuranceGroup)
   }
 
-  container.appendChild(pills)
   return container
 }
 

@@ -47,6 +47,14 @@ export interface FilterState {
   supportAmounts: Set<string>
 }
 
+export type SortField = 'grantAmount' | 'lastUpdated'
+export type SortDirection = 'asc' | 'desc'
+
+export interface SortState {
+  field: SortField | null
+  direction: SortDirection
+}
+
 export interface AppState {
   // Source data (immutable after init)
   readonly allPrograms: readonly ProgramRecord[]
@@ -57,6 +65,9 @@ export interface AppState {
 
   // Filters
   filters: FilterState
+
+  // Sort
+  sort: SortState
 
   // Card interaction
   expandedProgramId: string | null

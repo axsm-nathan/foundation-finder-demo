@@ -4,19 +4,38 @@
  * design.md §6
  */
 
-import type { AppState, FilterState, ProgramRecord } from './types'
+import type { AppState, FilterState, ProgramRecord, ProgramStatus, SortState } from './types'
 
 export function computeResults(
   programs: readonly ProgramRecord[],
-  state: Pick<AppState, 'debouncedQuery' | 'filters'>,
+  state: Pick<AppState, 'debouncedQuery' | 'filters' | 'sort'>,
 ): ProgramRecord[] {
-  return programs.filter(
+  const filtered = programs.filter(
     (p) =>
       matchesSearch(p, state.debouncedQuery) &&
       matchesInsuranceTypes(p, state.filters.insuranceTypes) &&
       matchesGrantStatuses(p, state.filters.grantStatuses) &&
       matchesSupportAmounts(p, state.filters.supportAmounts),
   )
+  return sortResults(filtered, state.sort)
+}
+
+function sortResults(programs: ProgramRecord[], sort: SortState): ProgramRecord[] {
+  if (sort.field === null) return programs
+  const dir = sort.direction === 'asc' ? 1 : -1
+  return [...programs].sort((a, b) => {
+    if (sort.field === 'grantAmount') {
+      const aVal = a.grantAmount ?? -Infinity
+      const bVal = b.grantAmount ?? -Infinity
+      return (aVal - bVal) * dir
+    }
+    if (sort.field === 'lastUpdated') {
+      const aVal = a.lastUpdated?.getTime() ?? -Infinity
+      const bVal = b.lastUpdated?.getTime() ?? -Infinity
+      return (aVal - bVal) * dir
+    }
+    return 0
+  })
 }
 
 export function matchesSearch(program: ProgramRecord, query: string): boolean {

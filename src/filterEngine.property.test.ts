@@ -35,7 +35,7 @@ describe('computeResults – property-based', () => {
   it('results are always a subset of input programs', () => {
     fc.assert(
       fc.property(fc.array(programArb), (programs) => {
-        const results = computeResults(programs, { debouncedQuery: '', filters: emptyFilters() })
+        const results = computeResults(programs, { debouncedQuery: '', filters: emptyFilters(), sort: { field: null, direction: 'desc' } })
         return results.every((r) => programs.includes(r))
       }),
     )
@@ -44,7 +44,7 @@ describe('computeResults – property-based', () => {
   it('empty filters + empty query returns all programs', () => {
     fc.assert(
       fc.property(fc.array(programArb), (programs) => {
-        const results = computeResults(programs, { debouncedQuery: '', filters: emptyFilters() })
+        const results = computeResults(programs, { debouncedQuery: '', filters: emptyFilters(), sort: { field: null, direction: 'desc' } })
         return results.length === programs.length
       }),
     )
@@ -53,7 +53,7 @@ describe('computeResults – property-based', () => {
   it('idempotent: applying same filter twice = applying it once', () => {
     fc.assert(
       fc.property(fc.array(programArb), fc.string(), (programs, query) => {
-        const state = { debouncedQuery: query, filters: emptyFilters() }
+        const state = { debouncedQuery: query, filters: emptyFilters(), sort: { field: null, direction: 'desc' as const } }
         const r1 = computeResults(programs, state)
         const r2 = computeResults(r1, state)
         return r1.length === r2.length && r1.every((p, i) => p === r2[i])
@@ -72,6 +72,7 @@ describe('computeResults – property-based', () => {
             grantStatuses: new Set<string>(),
             supportAmounts: new Set<string>(),
           },
+          sort: { field: null, direction: 'desc' as const },
         })
         return results.every((r) => r.insuranceTypes.includes('__no_such_type__'))
       }),
