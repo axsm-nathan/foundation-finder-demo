@@ -4,7 +4,12 @@ import { initState } from './stateManager'
 import { mount } from './app'
 import { ErrorState } from './components/ErrorState'
 
+// DISABLED — change to `true` to re-enable the widget
+const WIDGET_DISABLED = true
+
 document.addEventListener('DOMContentLoaded', () => {
+  if (WIDGET_DISABLED) return
+
   const rootEl = document.getElementById('foundation-finder-root')
   if (!rootEl) return
 
