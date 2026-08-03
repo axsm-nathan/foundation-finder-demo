@@ -5,7 +5,7 @@ import { mount } from './app'
 import { ErrorState } from './components/ErrorState'
 
 // DISABLED — change to `true` to re-enable the widget
-const WIDGET_DISABLED = true
+const WIDGET_DISABLED = false
 
 document.addEventListener('DOMContentLoaded', () => {
   if (WIDGET_DISABLED) return
