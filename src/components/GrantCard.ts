@@ -57,23 +57,60 @@ export function GrantCard(props: GrantCardProps): HTMLElement {
   desc.textContent = program.description
   body.appendChild(desc)
 
-  if (program.metadata.length > 0) {
-    const dg = document.createElement('div')
-    dg.className = 'ff-card__dg'
-    for (const field of program.metadata) {
-      const item = document.createElement('div')
-      item.className = 'ff-card__dg-item'
-      const dk = document.createElement('div')
-      dk.className = 'ff-card__dk'
-      dk.textContent = field.label
-      const dv = document.createElement('div')
-      dv.className = 'ff-card__dv'
-      dv.textContent = field.value
-      item.appendChild(dk)
-      item.appendChild(dv)
-      dg.appendChild(item)
+  const featuredFields: Array<{ label: string; value: string }> = []
+  if (program.diseaseIndications.length > 0) {
+    featuredFields.push({ label: 'Disease Indications', value: program.diseaseIndications.join(', ') })
+  }
+  if (program.insuranceTypes.length > 0) {
+    featuredFields.push({ label: 'Insurance Types', value: program.insuranceTypes.join(', ') })
+  }
+  if (program.grantAmount !== null) {
+    featuredFields.push({
+      label: 'Grant Amount',
+      value: program.grantAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
+    })
+  }
+
+  const makeMetaItem = (label: string, value: string): HTMLElement => {
+    const item = document.createElement('div')
+    item.className = 'ff-card__dg-item'
+    const dk = document.createElement('div')
+    dk.className = 'ff-card__dk'
+    dk.textContent = label
+    const dv = document.createElement('div')
+    dv.className = 'ff-card__dv'
+    dv.textContent = value
+    item.appendChild(dk)
+    item.appendChild(dv)
+    return item
+  }
+
+  if (featuredFields.length > 0 || program.metadata.length > 0) {
+    const meta = document.createElement('div')
+    meta.className = 'ff-card__meta'
+    if (featuredFields.length > 0 && program.metadata.length > 0) {
+      meta.classList.add('ff-card__meta--divided')
     }
-    body.appendChild(dg)
+
+    if (featuredFields.length > 0) {
+      const featured = document.createElement('div')
+      featured.className = 'ff-card__featured'
+      for (const field of featuredFields) {
+        featured.appendChild(makeMetaItem(field.label, field.value))
+      }
+      meta.appendChild(featured)
+    }
+
+    if (program.metadata.length > 0) {
+      const dg = document.createElement('div')
+      dg.className = 'ff-card__dg'
+      for (const field of program.metadata) {
+        dg.appendChild(makeMetaItem(field.label, field.value))
+      }
+      meta.appendChild(dg)
+    }
+
+    body.appendChild(meta)
   }
 
   card.appendChild(body)
@@ -82,46 +119,19 @@ export function GrantCard(props: GrantCardProps): HTMLElement {
   const foot = document.createElement('div')
   foot.className = 'ff-card__foot'
 
-  const links = document.createElement('div')
-  links.className = 'ff-card__links'
-
-  if (program.contactEmail) {
-    const a = document.createElement('a')
-    a.className = 'ff-card__link'
-    a.href = `mailto:${program.contactEmail}`
-    a.innerHTML = EXTERNAL_LINK_SVG
-    a.appendChild(document.createTextNode(program.contactEmail))
-    links.appendChild(a)
-  }
-
-  const websiteUrl = program.programUrl || program.foundationUrl
-  if (websiteUrl) {
-    const displayUrl = websiteUrl.replace(/^https?:\/\/(?:www\.)?/, '').replace(/\/$/, '')
-    const a = document.createElement('a')
-    a.className = 'ff-card__link'
-    a.href = websiteUrl
-    a.target = '_blank'
-    a.rel = 'noopener'
-    a.innerHTML = EXTERNAL_LINK_SVG
-    a.appendChild(document.createTextNode(displayUrl))
-    links.appendChild(a)
-  }
-
-  foot.appendChild(links)
-
   // CTA button
-  const applyUrl = program.applyUrl || program.programUrl || program.foundationUrl
+  const ctaUrl = program.foundationUrl || program.programUrl
   const cta = document.createElement('button')
   cta.type = 'button'
   cta.className = 'ff-btn ff-btn--primary'
-  cta.textContent = 'Apply Online →'
+  cta.innerHTML = `Visit Site ${EXTERNAL_LINK_SVG}`
 
-  if (!applyUrl) {
+  if (!ctaUrl) {
     cta.disabled = true
     cta.setAttribute('aria-disabled', 'true')
     cta.classList.add('ff-btn--disabled')
   } else {
-    cta.addEventListener('click', () => onCtaClick(applyUrl, program.programName, cta))
+    cta.addEventListener('click', () => onCtaClick(ctaUrl, program.programName, cta))
   }
 
   foot.appendChild(cta)

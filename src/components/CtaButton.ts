@@ -17,11 +17,11 @@ export function CtaButton(props: CtaButtonProps): HTMLElement {
     btn.disabled = true
     btn.setAttribute('aria-disabled', 'true')
     btn.classList.add('ff-btn--disabled')
-    btn.textContent = 'Apply Now'
+    btn.textContent = 'Visit Site'
     return btn
   }
 
-  btn.textContent = 'Apply Now'
+  btn.textContent = 'Visit Site'
 
   btn.addEventListener('click', () => {
     props.onClick(url, program.programName, btn)
