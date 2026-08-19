@@ -42,12 +42,23 @@ export function GrantCard(props: GrantCardProps): HTMLElement {
   topLeft.appendChild(foundationName)
   topLeft.appendChild(programName)
 
+  const topRight = document.createElement('div')
+  topRight.className = 'ff-card__top-right'
+
+  if (program.lastUpdated) {
+    const lastUpdated = document.createElement('span')
+    lastUpdated.className = 'ff-card__last-updated'
+    lastUpdated.textContent = `Updated ${program.lastUpdated.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+    topRight.appendChild(lastUpdated)
+  }
+
   const statusPill = document.createElement('span')
   statusPill.className = `ff-status-pill ff-status-pill--${statusClass}`
   statusPill.textContent = program.status
+  topRight.appendChild(statusPill)
 
   top.appendChild(topLeft)
-  top.appendChild(statusPill)
+  top.appendChild(topRight)
   card.appendChild(top)
 
   // ── Body ──────────────────────────────────────────────────────────────────
