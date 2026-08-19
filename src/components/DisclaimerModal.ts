@@ -24,19 +24,14 @@ export function DisclaimerModal(props: DisclaimerModalProps): HTMLElement {
 
   const p1 = document.createElement('p')
   p1.textContent =
-    'The Foundation Finder is a resource tool intended to help patients identify potential financial assistance programs. This tool does not constitute medical, legal, or financial advice.'
+    'Axsome Therapuetics, Inc. is not affiliated with, nor have provided financial support to any independent 3rd party foundation or charitable organization.'
 
   const p2 = document.createElement('p')
   p2.textContent =
-    'Eligibility requirements, program availability, and benefit amounts are subject to change. Always confirm current program details directly with the sponsoring organization.'
-
-  const p3 = document.createElement('p')
-  p3.textContent =
-    'By continuing, you acknowledge that this information is provided for educational purposes only and that Axsome Therapeutics is not responsible for the content of third-party websites or programs.'
+    'Eligibility requirements, program availability, and benefit amounts are subject to change.  Axsome does not influence eligibility and is unable to guarantee foundations acceptance and/or support.'
 
   body.appendChild(p1)
   body.appendChild(p2)
-  body.appendChild(p3)
 
   const footer = document.createElement('div')
   footer.className = 'ff-modal__footer'

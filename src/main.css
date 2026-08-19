@@ -5,6 +5,9 @@
    ============================================================================ */
 
 :root {
+  /* Map Webflow design system tokens so all --color-primary usages pick up Axsome Purple */
+  --color-primary: var(--_axsome-oms-design-system---brand--axsome-purple, #a82b8b);
+
   /* ── Foundation Finder semantic tokens ── */
   --ff-status-open:       var(--color-success, #2d7a3a);
   --ff-status-closed:     var(--color-muted, #6b7280);
@@ -43,7 +46,7 @@
 /* ── Root ──────────────────────────────────────────────────────────────────── */
 
 .ff-root {
-  font-family: var(--font-family-base, system-ui, sans-serif);
+  font-family: inherit;
   font-size: var(--font-size-base, 16px);
   color: var(--color-text, #111827);
   line-height: 1.5;
@@ -339,15 +342,25 @@
   transition: background 120ms, color 120ms;
 }
 
+.ff-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 .ff-btn--primary {
-  background: var(--color-primary, #0f4c8a);
+  background: var(--color-primary, #a82b8b);
   color: var(--color-background, #ffffff);
-  border-color: var(--color-primary, #0f4c8a);
+  border-color: var(--color-primary, #a82b8b);
 }
 
 .ff-btn--primary:hover {
-  background: var(--color-primary-light, #1d6bb8);
-  border-color: var(--color-primary-light, #1d6bb8);
+  background: var(--color-primary-light, #be3da1);
+  border-color: var(--color-primary-light, #be3da1);
+}
+
+.ff-btn--primary > svg {
+  margin: 0 0 0 10px;
 }
 
 .ff-btn--disabled,
@@ -447,10 +460,52 @@
   margin: 0 0 var(--spacing-md, 16px);
 }
 
+.ff-card__meta {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.ff-card__meta--divided {
+  grid-template-columns: 1fr 1fr;
+}
+
+.ff-card__featured {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px var(--spacing-md, 16px);
+}
+
+.ff-card__meta--divided .ff-card__featured {
+  border-right: 1px solid var(--color-border, #d1d5db);
+  padding-right: var(--spacing-lg, 24px);
+}
+
+.ff-card__meta--divided .ff-card__dg {
+  padding-left: var(--spacing-lg, 24px);
+}
+
 .ff-card__dg {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 12px var(--spacing-md, 16px);
+}
+
+@media (max-width: 540px) {
+  .ff-card__meta--divided {
+    grid-template-columns: 1fr;
+  }
+
+  .ff-card__meta--divided .ff-card__featured {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid var(--color-border, #d1d5db);
+    padding-bottom: var(--spacing-md, 16px);
+  }
+
+  .ff-card__meta--divided .ff-card__dg {
+    padding-left: 0;
+    padding-top: var(--spacing-md, 16px);
+  }
 }
 
 .ff-card__dg-item {
@@ -474,7 +529,7 @@
 
 .ff-card__foot {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
   gap: var(--spacing-sm, 8px);
@@ -791,4 +846,5 @@
   .ff-pill__label {
     max-width: 180px;
   }
+  
 }
