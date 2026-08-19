@@ -435,6 +435,19 @@
   gap: 4px;
 }
 
+.ff-card__top-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+  flex-shrink: 0;
+}
+
+.ff-card__last-updated {
+  font-size: 11px;
+  color: var(--color-text-muted, #6b7280);
+  white-space: nowrap;
+}
+
 .ff-card__foundation {
   font-size: var(--font-size-sm, 14px);
   color: var(--color-text-muted, #6b7280);
@@ -867,6 +880,10 @@
 
   .ff-card__top {
     flex-direction: column;
+  }
+
+  .ff-card__top-right {
+    flex-direction: row-reverse;
   }
 
   .ff-pill__label {
