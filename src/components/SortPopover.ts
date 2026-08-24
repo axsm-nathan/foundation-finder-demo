@@ -5,9 +5,12 @@ export interface SortPopoverProps {
   onSort: (field: SortField | null, direction: SortDirection) => void
 }
 
+const SORT_ICON = `<svg class="ff-sort-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 4L7 20M7 20L3 16M7 20L11 16M17 20L17 4M17 4L13 8M17 4L21 8"/></svg>`
+
 const OPTIONS: { field: SortField; label: string }[] = [
-  { field: 'grantAmount', label: 'Grant Amount' },
+  { field: 'foundationName', label: 'By Name' },
   { field: 'lastUpdated', label: 'Last Updated' },
+  { field: 'grantAmount', label: 'Grant Amount' },
 ]
 
 export function SortButton(props: SortPopoverProps): HTMLElement {
@@ -62,19 +65,6 @@ export function SortButton(props: SortPopoverProps): HTMLElement {
       popover.appendChild(item)
     }
 
-    // Clear sort option
-    if (props.sort.field !== null) {
-      const clearItem = document.createElement('button')
-      clearItem.type = 'button'
-      clearItem.className = 'ff-sort-option ff-sort-option--clear'
-      clearItem.setAttribute('role', 'menuitem')
-      clearItem.textContent = 'Default order'
-      clearItem.addEventListener('click', () => {
-        props.onSort(null, 'desc')
-        closePopover()
-      })
-      popover.appendChild(clearItem)
-    }
 
     wrapper.appendChild(popover)
     btn.setAttribute('aria-expanded', 'true')
@@ -111,12 +101,12 @@ export function SortButton(props: SortPopoverProps): HTMLElement {
 
 function updateButtonLabel(btn: HTMLButtonElement, sort: SortState): void {
   if (sort.field === null) {
-    btn.textContent = 'Sort'
+    btn.innerHTML = `<span class="ff-sort-btn__text">Sort</span>${SORT_ICON}`
     btn.classList.remove('ff-sort-btn--active')
     return
   }
   const opt = OPTIONS.find((o) => o.field === sort.field)
   const dir = sort.direction === 'asc' ? '↑' : '↓'
-  btn.textContent = `${opt?.label ?? 'Sort'} ${dir}`
+  btn.innerHTML = `<span class="ff-sort-btn__text">${opt?.label ?? 'Sort'} ${dir}</span>${SORT_ICON}`
   btn.classList.add('ff-sort-btn--active')
 }

@@ -48,7 +48,7 @@ describe('readPrograms', () => {
     expect(r.lastUpdated?.getFullYear()).toBe(2024)
     expect(r.insuranceTypes).toEqual(['medicare', 'medicaid'])
     expect(r.diseaseIndications).toEqual(['depression', 'anxiety'])
-    expect(r.grantAmount).toBe(5000)
+    expect(r.grantAmount).toBe('5000')
     expect(r.metadata).toEqual([{ label: 'Eligibility', value: 'Income-based' }])
   })
 
@@ -64,10 +64,10 @@ describe('readPrograms', () => {
     expect(r?.status).toBe('Closed')
   })
 
-  it('sets grantAmount to null for non-numeric string', () => {
+  it('preserves non-numeric grant amount string as-is', () => {
     makeProgramEl({ 'data-ff-program-id': 'x', 'data-ff-grant-amount': 'N/A' })
     const [r] = readPrograms()
-    expect(r?.grantAmount).toBeNull()
+    expect(r?.grantAmount).toBe('N/A')
   })
 
   it('sets lastUpdated to null for invalid date', () => {
