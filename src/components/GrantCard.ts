@@ -52,10 +52,10 @@ export function GrantCard(props: GrantCardProps): HTMLElement {
     topRight.appendChild(lastUpdated)
   }
 
-  const statusPill = document.createElement('span')
-  statusPill.className = `ff-status-pill ff-status-pill--${statusClass}`
-  statusPill.textContent = program.status
-  topRight.appendChild(statusPill)
+  // const statusPill = document.createElement('span')
+  // statusPill.className = `ff-status-pill ff-status-pill--${statusClass}`
+  // statusPill.textContent = program.status
+  // topRight.appendChild(statusPill)
 
   top.appendChild(topLeft)
   top.appendChild(topRight)
@@ -78,10 +78,7 @@ export function GrantCard(props: GrantCardProps): HTMLElement {
     featuredFields.push({ label: 'Insurance Types', value: program.insuranceTypes.join(', ') })
   }
   if (program.grantAmount !== null) {
-    featuredFields.push({
-      label: 'Grant Amount',
-      value: program.grantAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
-    })
+    featuredFields.push({ label: 'Grant Amount', value: program.grantAmount })
   }
 
   const makeMetaItem = (label: string, value: string): HTMLElement => {

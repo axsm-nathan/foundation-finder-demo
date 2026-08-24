@@ -25,7 +25,7 @@ export interface ProgramRecord {
   diseaseIndications: string[]
   /** Normalised to lowercase for matching */
   insuranceTypes: string[]
-  grantAmount: number | null
+  grantAmount: string | null
   applyUrl: string
   programUrl: string
   foundationUrl: string
@@ -47,7 +47,7 @@ export interface FilterState {
   supportAmounts: Set<string>
 }
 
-export type SortField = 'grantAmount' | 'lastUpdated'
+export type SortField = 'foundationName' | 'lastUpdated' | 'grantAmount'
 export type SortDirection = 'asc' | 'desc'
 
 export interface SortState {

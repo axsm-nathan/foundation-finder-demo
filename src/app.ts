@@ -18,23 +18,20 @@ import {
 import { computeResults, buildFilterDimensions } from './filterEngine'
 import { debounce } from './debounce'
 import { trackEvent } from './analytics'
-import { announce, observeBreakpoint } from './accessibility'
+import { announce } from './accessibility'
 import { DisclaimerModal } from './components/DisclaimerModal'
 import { SearchBar } from './components/SearchBar'
 import { FilterPills } from './components/FilterPills'
-import { FilterDrawer } from './components/FilterDrawer'
 import { SortButton } from './components/SortPopover'
 import { GrantCard } from './components/GrantCard'
 import { ExternalLinkModal } from './components/ExternalLinkModal'
 import { EmptyState } from './components/EmptyState'
-import { StatusSummary } from './components/StatusSummary'
+// import { StatusSummary } from './components/StatusSummary'
 
 export function mount(rootEl: HTMLElement): void {
   rootEl.setAttribute('role', 'main')
   rootEl.setAttribute('aria-label', 'Foundation Finder')
   rootEl.classList.add('ff-root')
-
-  observeBreakpoint(rootEl)
 
   // ── Search & filter section ───────────────────────────────────────────────
   const controlsSection = document.createElement('section')
@@ -70,66 +67,24 @@ export function mount(rootEl: HTMLElement): void {
     onClearAll: clearFilters,
   })
 
-  // Mobile filter button
-  let activeDrawerOverlay: HTMLElement | null = null
-
-  const filterBtn = document.createElement('button')
-  filterBtn.type = 'button'
-  filterBtn.className = 'ff-btn ff-filters-btn'
-  filterBtn.setAttribute('aria-label', 'Open filters')
-  filterBtn.textContent = 'Filters'
-
-  const mobileClearBtn = document.createElement('button')
-  mobileClearBtn.type = 'button'
-  mobileClearBtn.className = 'ff-clear-btn ff-mobile-clear-btn'
-  mobileClearBtn.setAttribute('aria-label', 'Clear all filters')
-  mobileClearBtn.textContent = 'Clear filters'
-  mobileClearBtn.addEventListener('click', () => clearFilters())
-
-  filterBtn.addEventListener('click', () => {
-    const drawerPills = FilterPills({
-      dimensions,
-      activeFilters: getState().filters,
-      allPrograms: getState().allPrograms,
-      onToggle: (dim, value) => {
-        toggleFilter(dim, value)
-        const results = computeResults(getState().allPrograms, getState())
-        announce(
-          `${results.length} program${results.length !== 1 ? 's' : ''} found`,
-          'polite',
-        )
-      },
-      onClearAll: clearFilters,
-    })
-    const drawer = FilterDrawer({
-      children: drawerPills,
-      triggerEl: filterBtn,
-      onClearAll: clearFilters,
-      onClose: () => {
-        document.body.removeChild(drawer)
-        activeDrawerOverlay = null
-      },
-    })
-    activeDrawerOverlay = drawer
-    document.body.appendChild(drawer)
-  })
-
   let sortWrapperEl = SortButton({
     sort: state.sort,
     onSort: (field, direction) => setSort(field, direction),
   })
   sortWrapperEl.className = 'ff-sort-wrapper'
 
-  controlsSection.appendChild(searchBar)
-  controlsSection.appendChild(sortWrapperEl)
-  controlsSection.appendChild(filterBtn)
-  controlsSection.appendChild(mobileClearBtn)
+  const searchRow = document.createElement('div')
+  searchRow.className = 'ff-search-row'
+  searchRow.appendChild(searchBar)
+  searchRow.appendChild(sortWrapperEl)
+
+  controlsSection.appendChild(searchRow)
   controlsSection.appendChild(filterPillsEl)
   rootEl.appendChild(controlsSection)
 
   // ── Status summary row ────────────────────────────────────────────────────
-  let statusSummaryEl = StatusSummary({ programs: [...state.allPrograms] })
-  rootEl.appendChild(statusSummaryEl)
+  // let statusSummaryEl = StatusSummary({ programs: [...state.allPrograms] })
+  // rootEl.appendChild(statusSummaryEl)
 
   // ── Results section ───────────────────────────────────────────────────────
   const resultsSection = document.createElement('section')
@@ -154,7 +109,19 @@ export function mount(rootEl: HTMLElement): void {
   scrollTopBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>`
   scrollTopBtn.addEventListener('click', () => rootEl.scrollIntoView({ behavior: 'smooth' }))
 
+  const legalDisclaimer = document.createElement('div')
+  legalDisclaimer.className = 'ff-legal-disclaimer'
+  const legalP1 = document.createElement('p')
+  legalP1.textContent =
+    'Axsome is not affiliated with, and has not provided any financial support to, any of the independent 3rd party foundation or charitable organizations listed below. Eligibility requirements, program availability, and benefit amounts are determined solely by each organization with no input from Axsome, and are subject to change at any time. Axsome has no role in determining eligibility or whether any foundation will provide support.'
+  const legalP2 = document.createElement('p')
+  legalP2.textContent =
+    'Information provided below is based on review of publicly-available sources and is believed to be accurate as of the date indicated. Contact the organizations directly for most up-to-date information and to request assistance.'
+  legalDisclaimer.appendChild(legalP1)
+  legalDisclaimer.appendChild(legalP2)
+
   resultsSection.appendChild(countEl)
+  resultsSection.appendChild(legalDisclaimer)
   resultsSection.appendChild(listEl)
   resultsSection.appendChild(scrollTopBtn)
   rootEl.appendChild(resultsSection)
@@ -171,13 +138,7 @@ export function mount(rootEl: HTMLElement): void {
     renderExternalLinkModal(s)
     renderResults(s)
     renderFilterPills(s)
-    renderDrawerPills(s)
     renderSortButton(s)
-    const hasFilters =
-      s.filters.insuranceTypes.size > 0 ||
-      s.filters.grantStatuses.size > 0 ||
-      s.filters.supportAmounts.size > 0
-    mobileClearBtn.classList.toggle('ff-mobile-clear-btn--visible', hasFilters)
   })
 
   // ── Renderers ─────────────────────────────────────────────────────────────
@@ -224,9 +185,9 @@ export function mount(rootEl: HTMLElement): void {
     const countText = `${results.length} program${results.length !== 1 ? 's' : ''} found`
     countEl.textContent = countText
 
-    const updatedSummary = StatusSummary({ programs: results })
-    statusSummaryEl.replaceWith(updatedSummary)
-    statusSummaryEl = updatedSummary
+    // const updatedSummary = StatusSummary({ programs: results })
+    // statusSummaryEl.replaceWith(updatedSummary)
+    // statusSummaryEl = updatedSummary
 
     listEl.innerHTML = ''
     firstCardObserver?.disconnect()
@@ -281,28 +242,6 @@ export function mount(rootEl: HTMLElement): void {
   function renderFilterPills(s: AppState): void {
     // Replace inline filter pills to reflect new active state
     const existing = controlsSection.querySelector('.ff-filters')
-    if (!existing) return
-
-    const updated = FilterPills({
-      dimensions,
-      activeFilters: s.filters,
-      allPrograms: s.allPrograms,
-      onToggle: (dim, value) => {
-        toggleFilter(dim, value)
-        const results = computeResults(getState().allPrograms, getState())
-        announce(
-          `${results.length} program${results.length !== 1 ? 's' : ''} found`,
-          'polite',
-        )
-      },
-      onClearAll: clearFilters,
-    })
-    existing.replaceWith(updated)
-  }
-
-  function renderDrawerPills(s: AppState): void {
-    if (!activeDrawerOverlay) return
-    const existing = activeDrawerOverlay.querySelector('.ff-filters')
     if (!existing) return
 
     const updated = FilterPills({

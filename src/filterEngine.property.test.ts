@@ -16,7 +16,7 @@ const programArb: fc.Arbitrary<ProgramRecord> = fc.record({
   lastUpdated: fc.option(fc.date(), { nil: null }),
   diseaseIndications: fc.array(fc.string()),
   insuranceTypes: fc.array(fc.string()),
-  grantAmount: fc.option(fc.float({ min: 0, max: 100000, noNaN: true }), { nil: null }),
+  grantAmount: fc.option(fc.string(), { nil: null }),
   applyUrl: fc.string(),
   programUrl: fc.string(),
   foundationUrl: fc.string(),

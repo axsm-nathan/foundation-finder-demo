@@ -28,7 +28,7 @@ export function DisclaimerModal(props: DisclaimerModalProps): HTMLElement {
 
   const p2 = document.createElement('p')
   p2.textContent =
-    'Eligibility requirements, program availability, and benefit amounts are subject to change.  Axsome does not influence eligibility and is unable to guarantee foundations acceptance and/or support.'
+    'Eligibility requirements, program availability, and benefit amounts are subject to change. Axsome does not influence eligibility and is unable to guarantee foundations acceptance and/or support.'
 
   body.appendChild(p1)
   body.appendChild(p2)

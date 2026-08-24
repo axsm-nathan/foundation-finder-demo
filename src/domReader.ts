@@ -102,13 +102,9 @@ export function parseMultiRef(raw: string): string[] {
     .filter((s) => s.length > 0)
 }
 
-/**
- * Parses a grant amount string to a number. Returns null for empty/NaN.
- */
-function parseAmount(raw: string): number | null {
-  if (!raw.trim()) return null
-  const value = parseFloat(raw)
-  return isNaN(value) ? null : value
+function parseAmount(raw: string): string | null {
+  const trimmed = raw.trim()
+  return trimmed.length > 0 ? trimmed : null
 }
 
 /**

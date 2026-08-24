@@ -16,7 +16,7 @@ const emptyFilters = (): FilterState => ({
   supportAmounts: new Set<string>(),
 })
 
-const defaultSort = (): SortState => ({ field: null, direction: 'desc' })
+const defaultSort = (): SortState => ({ field: 'foundationName', direction: 'asc' })
 
 let state: AppState = {
   allPrograms: [],

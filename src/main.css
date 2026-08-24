@@ -79,13 +79,22 @@
   flex-shrink: 0;
 }
 
+/* ── Search row (search + sort always on the same line) ────────────────────── */
+
+.ff-search-row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--spacing-sm, 8px);
+  width: 100%;
+}
+
 /* ── Search ────────────────────────────────────────────────────────────────── */
 
 .ff-search {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  flex: 1 1 300px;
+  flex: 1 1 0;
   min-width: 0;
 }
 
@@ -165,31 +174,6 @@
   gap: var(--spacing-sm, 8px);
 }
 
-/* Mobile: show filter button, hide inline pills */
-.ff-filters-btn,
-.ff-btn.ff-filters-btn {
-  display: none;
-  align-self: flex-end;
-}
-
-.ff-root--mobile .ff-filters-btn {
-  display: flex;
-}
-
-.ff-root--mobile .ff-filters {
-  display: none;
-}
-
-/* Mobile clear-filters button — only shown when filters are active */
-.ff-mobile-clear-btn {
-  display: none;
-  align-self: center;
-}
-
-.ff-root--mobile .ff-mobile-clear-btn.ff-mobile-clear-btn--visible {
-  display: inline;
-}
-
 /* ── Sort button + popover ─────────────────────────────────────────────────── */
 
 .ff-sort-wrapper {
@@ -199,6 +183,27 @@
 
 .ff-sort-btn {
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ff-sort-btn__icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 480px) {
+  .ff-sort-btn__icon {
+    display: none;
+  }
+}
+
+@media (max-width: 479px) {
+  .ff-sort-btn__text {
+    display: none;
+  }
 }
 
 .ff-sort-btn--active {
@@ -388,6 +393,21 @@
   gap: var(--spacing-lg, 24px);
 }
 
+.ff-legal-disclaimer {
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text-muted, #6b7280);
+  font-style: italic;
+  background: var(--color-surface, #f9fafb);
+  border: 1px solid var(--color-border, #d1d5db);
+  border-radius: var(--border-radius-md, 8px);
+  padding: var(--spacing-md, 16px);
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.ff-legal-disclaimer p + p {
+  margin-top: var(--spacing-sm, 8px);
+}
+
 /* ── Section header ────────────────────────────────────────────────────────── */
 
 .ff-sec-head {
@@ -412,14 +432,9 @@
   background: var(--color-background, #ffffff);
   border: 1px solid var(--color-border, #d1d5db);
   border-radius: var(--border-radius-md, 8px);
-  border-left: var(--ff-card-border-width) solid var(--ff-status-closed);
+  border-left: var(--ff-card-border-width) solid var(--color-primary);
   overflow: hidden;
 }
-
-.ff-card--open    { border-left-color: var(--ff-status-open); }
-.ff-card--closed  { border-left-color: var(--ff-status-closed); }
-.ff-card--pending { border-left-color: var(--ff-status-pending); }
-.ff-card--government { border-left-color: var(--ff-status-government); }
 
 .ff-card__top {
   display: flex;

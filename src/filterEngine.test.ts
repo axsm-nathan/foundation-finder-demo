@@ -18,7 +18,7 @@ function makeProgram(overrides: Partial<ProgramRecord> = {}): ProgramRecord {
     lastUpdated: null,
     diseaseIndications: ['depression'],
     insuranceTypes: ['medicare'],
-    grantAmount: 5000,
+    grantAmount: null,
     applyUrl: '',
     programUrl: '',
     foundationUrl: '',
@@ -116,39 +116,10 @@ describe('matchesGrantStatuses', () => {
 // ── matchesSupportAmounts ────────────────────────────────────────────────────
 
 describe('matchesSupportAmounts', () => {
-  it('returns true when no filter active', () => {
-    expect(matchesSupportAmounts(makeProgram({ grantAmount: 500 }), new Set())).toBe(true)
-  })
-
-  it('null grantAmount always passes', () => {
+  it('always returns true (support amount filter removed)', () => {
+    expect(matchesSupportAmounts(makeProgram(), new Set())).toBe(true)
+    expect(matchesSupportAmounts(makeProgram(), new Set(['under-1000']))).toBe(true)
     expect(matchesSupportAmounts(makeProgram({ grantAmount: null }), new Set(['under-1000']))).toBe(true)
-  })
-
-  it('under-1000: matches amount < 1000', () => {
-    expect(matchesSupportAmounts(makeProgram({ grantAmount: 999 }), new Set(['under-1000']))).toBe(true)
-    expect(matchesSupportAmounts(makeProgram({ grantAmount: 1000 }), new Set(['under-1000']))).toBe(false)
-  })
-
-  it('1000-5000: matches 1000 ≤ amount < 5000', () => {
-    expect(matchesSupportAmounts(makeProgram({ grantAmount: 1000 }), new Set(['1000-5000']))).toBe(true)
-    expect(matchesSupportAmounts(makeProgram({ grantAmount: 4999 }), new Set(['1000-5000']))).toBe(true)
-    expect(matchesSupportAmounts(makeProgram({ grantAmount: 5000 }), new Set(['1000-5000']))).toBe(false)
-  })
-
-  it('5000-10000: matches 5000 ≤ amount < 10000', () => {
-    expect(matchesSupportAmounts(makeProgram({ grantAmount: 5000 }), new Set(['5000-10000']))).toBe(true)
-    expect(matchesSupportAmounts(makeProgram({ grantAmount: 9999 }), new Set(['5000-10000']))).toBe(true)
-    expect(matchesSupportAmounts(makeProgram({ grantAmount: 10000 }), new Set(['5000-10000']))).toBe(false)
-  })
-
-  it('10000-plus: matches amount >= 10000', () => {
-    expect(matchesSupportAmounts(makeProgram({ grantAmount: 10000 }), new Set(['10000-plus']))).toBe(true)
-    expect(matchesSupportAmounts(makeProgram({ grantAmount: 9999 }), new Set(['10000-plus']))).toBe(false)
-  })
-
-  it('OR: matches any of the selected ranges', () => {
-    const p = makeProgram({ grantAmount: 1500 })
-    expect(matchesSupportAmounts(p, new Set(['under-1000', '1000-5000']))).toBe(true)
   })
 })
 
@@ -156,9 +127,9 @@ describe('matchesSupportAmounts', () => {
 
 describe('computeResults', () => {
   const programs: ProgramRecord[] = [
-    makeProgram({ id: 'a', status: 'Open', insuranceTypes: ['medicare'], grantAmount: 500 }),
-    makeProgram({ id: 'b', status: 'Closed', insuranceTypes: ['private insurance'], grantAmount: 2000 }),
-    makeProgram({ id: 'c', status: 'Open', insuranceTypes: ['medicaid'], grantAmount: 15000 }),
+    makeProgram({ id: 'a', status: 'Open', insuranceTypes: ['medicare'], grantAmount: '$500' }),
+    makeProgram({ id: 'b', status: 'Closed', insuranceTypes: ['private insurance'], grantAmount: '$2,000' }),
+    makeProgram({ id: 'c', status: 'Open', insuranceTypes: ['medicaid'], grantAmount: '$15,000' }),
   ]
 
   it('returns all programs when no filters or query', () => {
