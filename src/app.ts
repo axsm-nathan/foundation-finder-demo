@@ -80,6 +80,20 @@ export function mount(rootEl: HTMLElement): void {
 
   controlsSection.appendChild(searchRow)
   controlsSection.appendChild(filterPillsEl)
+
+  // ── Legal disclaimer (above search bar) ───────────────────────────────────
+  const legalDisclaimer = document.createElement('div')
+  legalDisclaimer.className = 'ff-legal-disclaimer'
+  const legalP1 = document.createElement('p')
+  legalP1.textContent =
+    'Axsome is not affiliated with, and has not provided any financial support to, any of the independent 3rd party foundation or charitable organizations listed below. Eligibility requirements, program availability, and benefit amounts are determined solely by each organization with no input from Axsome, and are subject to change at any time. Axsome has no role in determining eligibility or whether any foundation will provide support.'
+  const legalP2 = document.createElement('p')
+  legalP2.textContent =
+    'Information provided below is based on review of publicly-available sources and is believed to be accurate as of the date indicated. Contact the organizations directly for most up-to-date information and to request assistance.'
+  legalDisclaimer.appendChild(legalP1)
+  legalDisclaimer.appendChild(legalP2)
+  rootEl.appendChild(legalDisclaimer)
+
   rootEl.appendChild(controlsSection)
 
   // ── Status summary row ────────────────────────────────────────────────────
@@ -109,19 +123,7 @@ export function mount(rootEl: HTMLElement): void {
   scrollTopBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>`
   scrollTopBtn.addEventListener('click', () => rootEl.scrollIntoView({ behavior: 'smooth' }))
 
-  const legalDisclaimer = document.createElement('div')
-  legalDisclaimer.className = 'ff-legal-disclaimer'
-  const legalP1 = document.createElement('p')
-  legalP1.textContent =
-    'Axsome is not affiliated with, and has not provided any financial support to, any of the independent 3rd party foundation or charitable organizations listed below. Eligibility requirements, program availability, and benefit amounts are determined solely by each organization with no input from Axsome, and are subject to change at any time. Axsome has no role in determining eligibility or whether any foundation will provide support.'
-  const legalP2 = document.createElement('p')
-  legalP2.textContent =
-    'Information provided below is based on review of publicly-available sources and is believed to be accurate as of the date indicated. Contact the organizations directly for most up-to-date information and to request assistance.'
-  legalDisclaimer.appendChild(legalP1)
-  legalDisclaimer.appendChild(legalP2)
-
   resultsSection.appendChild(countEl)
-  resultsSection.appendChild(legalDisclaimer)
   resultsSection.appendChild(listEl)
   resultsSection.appendChild(scrollTopBtn)
   rootEl.appendChild(resultsSection)

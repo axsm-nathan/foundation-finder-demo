@@ -12,6 +12,20 @@ const STATUS_CLASS: Record<ProgramStatus, string> = {
   'Government Program': 'government',
 }
 
+const STATUS_PILL_LABEL: Record<ProgramStatus, string> = {
+  Open: 'Open',
+  Closed: 'Closed',
+  'Not Yet Open': 'N/A',
+  'Government Program': 'N/A',
+}
+
+const STATUS_PILL_CLASS: Record<ProgramStatus, string> = {
+  Open: 'open',
+  Closed: 'closed',
+  'Not Yet Open': 'na',
+  'Government Program': 'na',
+}
+
 const EXTERNAL_LINK_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`
 const MAIL_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`
 const PHONE_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>`
@@ -52,10 +66,10 @@ export function GrantCard(props: GrantCardProps): HTMLElement {
     topRight.appendChild(lastUpdated)
   }
 
-  // const statusPill = document.createElement('span')
-  // statusPill.className = `ff-status-pill ff-status-pill--${statusClass}`
-  // statusPill.textContent = program.status
-  // topRight.appendChild(statusPill)
+  const statusPill = document.createElement('span')
+  statusPill.className = `ff-status-pill ff-status-pill--${STATUS_PILL_CLASS[program.status] ?? 'na'}`
+  statusPill.textContent = STATUS_PILL_LABEL[program.status] ?? 'N/A'
+  topRight.appendChild(statusPill)
 
   top.appendChild(topLeft)
   top.appendChild(topRight)
@@ -75,7 +89,7 @@ export function GrantCard(props: GrantCardProps): HTMLElement {
     featuredFields.push({ label: 'Disease Indications', value: program.diseaseIndications.join(', ') })
   }
   if (program.insuranceTypes.length > 0) {
-    featuredFields.push({ label: 'Insurance Types', value: program.insuranceTypes.join(', ') })
+    featuredFields.push({ label: 'Insurance Requirements', value: program.insuranceTypes.join(', ') })
   }
   if (program.grantAmount !== null) {
     featuredFields.push({ label: 'Grant Amount', value: program.grantAmount })
@@ -95,26 +109,31 @@ export function GrantCard(props: GrantCardProps): HTMLElement {
     return item
   }
 
-  if (featuredFields.length > 0 || program.metadata.length > 0) {
+  const allFields = [...featuredFields, ...program.metadata]
+
+  if (allFields.length > 0) {
     const meta = document.createElement('div')
     meta.className = 'ff-card__meta'
-    if (featuredFields.length > 0 && program.metadata.length > 0) {
+
+    const midpoint = Math.ceil(allFields.length / 2)
+    const leftFields = allFields.slice(0, midpoint)
+    const rightFields = allFields.slice(midpoint)
+
+    if (rightFields.length > 0) {
       meta.classList.add('ff-card__meta--divided')
     }
 
-    if (featuredFields.length > 0) {
-      const featured = document.createElement('div')
-      featured.className = 'ff-card__featured'
-      for (const field of featuredFields) {
-        featured.appendChild(makeMetaItem(field.label, field.value))
-      }
-      meta.appendChild(featured)
+    const featured = document.createElement('div')
+    featured.className = 'ff-card__featured'
+    for (const field of leftFields) {
+      featured.appendChild(makeMetaItem(field.label, field.value))
     }
+    meta.appendChild(featured)
 
-    if (program.metadata.length > 0) {
+    if (rightFields.length > 0) {
       const dg = document.createElement('div')
       dg.className = 'ff-card__dg'
-      for (const field of program.metadata) {
+      for (const field of rightFields) {
         dg.appendChild(makeMetaItem(field.label, field.value))
       }
       meta.appendChild(dg)

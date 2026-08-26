@@ -631,6 +631,7 @@
 .ff-status-pill--closed     { color: var(--ff-status-closed); }
 .ff-status-pill--pending    { color: var(--ff-status-pending); }
 .ff-status-pill--government { color: var(--ff-status-government); }
+.ff-status-pill--na         { color: var(--ff-status-closed); }
 
 
 /* ── Empty / Error / Loading States ───────────────────────────────────────── */

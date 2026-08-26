@@ -42,7 +42,7 @@ export function FilterPills(props: FilterPillsProps): HTMLElement {
 
     const insuranceLabel = document.createElement('span')
     insuranceLabel.className = 'ff-filter-group__label'
-    insuranceLabel.textContent = 'INSURANCE'
+    insuranceLabel.textContent = 'INSURANCE REQUIREMENTS'
     insuranceGroup.appendChild(insuranceLabel)
 
     const insurancePills = document.createElement('div')
@@ -50,7 +50,6 @@ export function FilterPills(props: FilterPillsProps): HTMLElement {
 
     for (const value of insuranceDim.values) {
       const count = insuranceTypes.get(value) ?? 0
-      if (count === 0) continue
       const active = props.activeFilters.insuranceTypes.has(value)
       const btn = makePill(formatLabel('insuranceTypes', value), count, active)
       btn.addEventListener('click', () => props.onToggle('insuranceTypes', value))
@@ -91,5 +90,6 @@ function formatLabel(dim: keyof FilterState, value: string): string {
       case '10000-plus': return '$10,000+'
     }
   }
+  if (value === 'n/a') return 'N/A'
   return value.charAt(0).toUpperCase() + value.slice(1)
 }
