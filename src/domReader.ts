@@ -35,15 +35,27 @@ const VALID_STATUSES = new Set<ProgramStatus>([
  *   - The source CMS wrapper element(s) are hidden (display:none)
  */
 export function readPrograms(): ProgramRecord[] {
+  // Only read leaf-level [data-ff-program] elements — those that contain no
+  // nested [data-ff-program] descendants. In Webflow, the .w-dyn-item wrapper
+  // may also receive the attribute, which would otherwise cause each program to
+  // appear twice in the result set.
   const elements = Array.from(
     document.querySelectorAll<HTMLElement>('[data-ff-program]'),
-  ).filter((el) => el.id !== 'foundation-finder-root')
+  ).filter(
+    (el) =>
+      el.id !== 'foundation-finder-root' &&
+      el.querySelectorAll('[data-ff-program]').length === 0,
+  )
 
   const records: ProgramRecord[] = []
+  const seenIds = new Set<string>()
 
   for (const el of elements) {
     try {
-      records.push(parseProgram(el))
+      const record = parseProgram(el)
+      if (seenIds.has(record.id)) continue
+      seenIds.add(record.id)
+      records.push(record)
     } catch (err) {
       console.warn('[FoundationFinder] Failed to parse program element:', el, err)
     }

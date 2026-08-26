@@ -115,12 +115,18 @@ export interface FilterDimension {
   values: string[]
 }
 
-export function buildFilterDimensions(_programs: readonly ProgramRecord[]): FilterDimension[] {
+export function buildFilterDimensions(programs: readonly ProgramRecord[]): FilterDimension[] {
+  const insuranceSet = new Set<string>()
+  for (const p of programs) {
+    for (const t of p.insuranceTypes) {
+      insuranceSet.add(t)
+    }
+  }
   return [
     {
       id: 'insuranceTypes',
       label: 'Insurance Requirements',
-      values: ['medicaid', 'medicare', 'n/a'],
+      values: [...insuranceSet].sort(),
     },
   ]
 }
