@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { readPrograms, parseMultiRef } from './domReader'
+import { FIELD_MAPPINGS, MARKER_ATTRIBUTE } from './fieldMappings'
 
 function makeProgramEl(attrs: Record<string, string>): HTMLElement {
   const el = document.createElement('div')
@@ -96,6 +97,17 @@ describe('readPrograms', () => {
     document.body.appendChild(wrapper)
     readPrograms()
     expect(wrapper.style.display).toBe('none')
+  })
+})
+
+describe('fieldMappings wiring', () => {
+  it('reads programName from the attribute named in FIELD_MAPPINGS', () => {
+    const el = document.createElement('div')
+    el.setAttribute(MARKER_ATTRIBUTE, '')
+    el.setAttribute(FIELD_MAPPINGS.programName, 'Mapped Name')
+    document.body.appendChild(el)
+    const [r] = readPrograms()
+    expect(r?.programName).toBe('Mapped Name')
   })
 })
 
