@@ -19,6 +19,7 @@ function makeProgram(overrides: Partial<ProgramRecord> = {}): ProgramRecord {
     diseaseIndications: ['depression'],
     insuranceTypes: ['medicare'],
     insuranceTypesRaw: 'Medicare required',
+    insuranceDescription: 'Medicare required',
     grantAmount: null,
     applyUrl: '',
     programUrl: '',
@@ -133,9 +134,9 @@ describe('matchesSupportAmounts', () => {
 
 describe('computeResults', () => {
   const programs: ProgramRecord[] = [
-    makeProgram({ id: 'a', status: 'Open', insuranceTypes: ['medicare'], insuranceTypesRaw: 'Medicare required', grantAmount: '$500' }),
-    makeProgram({ id: 'b', status: 'Closed', insuranceTypes: ['private insurance'], insuranceTypesRaw: 'Private insurance required', grantAmount: '$2,000' }),
-    makeProgram({ id: 'c', status: 'Open', insuranceTypes: ['medicaid'], insuranceTypesRaw: 'Medicaid required', grantAmount: '$15,000' }),
+    makeProgram({ id: 'a', status: 'Open', insuranceTypes: ['medicare'], insuranceTypesRaw: 'Medicare required', insuranceDescription: 'Medicare required', grantAmount: '$500' }),
+    makeProgram({ id: 'b', status: 'Closed', insuranceTypes: ['private insurance'], insuranceTypesRaw: 'Private insurance required', insuranceDescription: 'Private insurance required', grantAmount: '$2,000' }),
+    makeProgram({ id: 'c', status: 'Open', insuranceTypes: ['medicaid'], insuranceTypesRaw: 'Medicaid required', insuranceDescription: 'Medicaid required', grantAmount: '$15,000' }),
   ]
 
   it('returns all programs when no filters or query', () => {

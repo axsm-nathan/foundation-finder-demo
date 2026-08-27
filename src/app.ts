@@ -229,6 +229,37 @@ export function mount(rootEl: HTMLElement): void {
       listEl.appendChild(grid)
     }
 
+    if (window.location.origin !== 'https://axsomeonmyside.com') {
+      const placeholder = GrantCard({
+        program: {
+          id: '__dev-placeholder__',
+          foundationName: 'Lorem Ipsum Foundation',
+          programName: 'Lorem Ipsum Grant Program',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.',
+          status: 'Open',
+          lastUpdated: new Date(),
+          diseaseIndications: ['lorem ipsum', 'dolor sit amet'],
+          insuranceTypes: ['lorem'],
+          insuranceTypesRaw: 'Lorem ipsum coverage required',
+          insuranceDescription: 'Lorem ipsum coverage required. Consectetur adipiscing elit sit amet.',
+          grantAmount: '$9,999',
+          applyUrl: '#',
+          programUrl: '#',
+          foundationUrl: '#',
+          contactEmail: 'lorem@ipsum.dev',
+          contactPhone: '555-555-5555',
+          metadata: [
+            { label: 'Lorem Field', value: 'Consectetur adipiscing elit' },
+            { label: 'Ipsum Field', value: 'Sed do eiusmod tempor' },
+            { label: 'Dolor Field', value: 'Ut labore et dolore magna' },
+          ],
+        },
+        onCtaClick: () => {},
+      })
+      listEl.appendChild(placeholder)
+    }
+
     const firstCard = listEl.querySelector<HTMLElement>('.ff-card')
     if (firstCard) {
       firstCardObserver = new IntersectionObserver(
