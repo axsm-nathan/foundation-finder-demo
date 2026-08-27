@@ -91,9 +91,7 @@ export function GrantCard(props: GrantCardProps): HTMLElement {
   if (program.insuranceDescription.trim()) {
     featuredFields.push({ label: 'Insurance Requirements', value: program.insuranceDescription })
   }
-  if (program.grantAmount !== null) {
-    featuredFields.push({ label: 'Grant Amount', value: program.grantAmount })
-  }
+  featuredFields.push({ label: 'Grant Amount', value: program.grantAmount ?? 'N/A' })
 
   const makeMetaItem = (label: string, value: string): HTMLElement => {
     const item = document.createElement('div')
