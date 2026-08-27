@@ -25,6 +25,8 @@ export interface ProgramRecord {
   diseaseIndications: string[]
   /** Normalised to lowercase for matching */
   insuranceTypes: string[]
+  /** Raw attribute value — used for display and substring filter matching */
+  insuranceTypesRaw: string
   grantAmount: string | null
   applyUrl: string
   programUrl: string

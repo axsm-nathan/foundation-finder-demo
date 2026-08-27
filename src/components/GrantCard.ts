@@ -84,12 +84,26 @@ export function GrantCard(props: GrantCardProps): HTMLElement {
   desc.textContent = program.description
   body.appendChild(desc)
 
+  if (program.insuranceTypesRaw.trim()) {
+    const insuranceSection = document.createElement('div')
+    insuranceSection.className = 'ff-card__insurance'
+
+    const insuranceLabel = document.createElement('span')
+    insuranceLabel.className = 'ff-card__insurance-label'
+    insuranceLabel.textContent = 'Insurance Requirements'
+
+    const insuranceValue = document.createElement('span')
+    insuranceValue.className = 'ff-card__insurance-value'
+    insuranceValue.textContent = program.insuranceTypesRaw
+
+    insuranceSection.appendChild(insuranceLabel)
+    insuranceSection.appendChild(insuranceValue)
+    body.appendChild(insuranceSection)
+  }
+
   const featuredFields: Array<{ label: string; value: string }> = []
   if (program.diseaseIndications.length > 0) {
     featuredFields.push({ label: 'Disease Indications', value: program.diseaseIndications.join(', ') })
-  }
-  if (program.insuranceTypes.length > 0) {
-    featuredFields.push({ label: 'Insurance Requirements', value: program.insuranceTypes.join(', ') })
   }
   if (program.grantAmount !== null) {
     featuredFields.push({ label: 'Grant Amount', value: program.grantAmount })

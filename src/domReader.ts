@@ -92,6 +92,7 @@ function parseProgram(el: HTMLElement): ProgramRecord {
     lastUpdated: parseDate(attr(el, FIELD_MAPPINGS.lastUpdated)),
     diseaseIndications: parseMultiRef(attr(el, FIELD_MAPPINGS.diseaseIndications)),
     insuranceTypes: parseMultiRef(attr(el, FIELD_MAPPINGS.insuranceTypes)),
+    insuranceTypesRaw: attr(el, FIELD_MAPPINGS.insuranceTypes),
     grantAmount: parseAmount(attr(el, FIELD_MAPPINGS.grantAmount)),
     applyUrl: attr(el, FIELD_MAPPINGS.applyUrl),
     programUrl: attr(el, FIELD_MAPPINGS.programUrl),
