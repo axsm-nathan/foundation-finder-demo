@@ -15,5 +15,6 @@ export const FIELD_MAPPINGS = {
   foundationUrl:      'data-ff-foundation-url',
   contactEmail:       'data-ff-contact-email',
   contactPhone:       'data-ff-contact-phone',
-  metadata:           'data-ff-metadata',
+  metadata:              'data-ff-metadata',
+  insuranceDescription:  'data-ff-insurance-description',
 } as const satisfies Record<string, string>

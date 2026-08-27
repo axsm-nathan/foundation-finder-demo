@@ -6,7 +6,7 @@
 
 import type { AppState, FilterState, ProgramRecord, ProgramStatus, SortState } from './types'
 
-export const INSURANCE_FILTER_TAGS = ['Medicare', 'Medicaid', 'Military Benefits', 'N/A']
+export const INSURANCE_FILTER_TAGS = ['Medicare', 'Medicaid', 'Commercial', 'N/A']
 
 export function computeResults(
   programs: readonly ProgramRecord[],

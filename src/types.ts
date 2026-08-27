@@ -27,6 +27,8 @@ export interface ProgramRecord {
   insuranceTypes: string[]
   /** Raw attribute value — used for display and substring filter matching */
   insuranceTypesRaw: string
+  /** Full prose text from CMS, used for card display */
+  insuranceDescription: string
   grantAmount: string | null
   applyUrl: string
   programUrl: string
