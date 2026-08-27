@@ -18,6 +18,7 @@ function makeProgram(overrides: Partial<ProgramRecord> = {}): ProgramRecord {
     lastUpdated: null,
     diseaseIndications: ['depression'],
     insuranceTypes: ['medicare'],
+    insuranceTypesRaw: 'Medicare required',
     grantAmount: null,
     applyUrl: '',
     programUrl: '',
@@ -76,22 +77,27 @@ describe('matchesSearch', () => {
 // ── matchesInsuranceTypes ────────────────────────────────────────────────────
 
 describe('matchesInsuranceTypes', () => {
-  const p = makeProgram({ insuranceTypes: ['medicare', 'medicaid'] })
+  const p = makeProgram({ insuranceTypesRaw: 'Medicare, Medicaid, or Military Benefits' })
 
   it('returns true when no filter active', () => {
     expect(matchesInsuranceTypes(p, new Set())).toBe(true)
   })
 
-  it('returns true when program has a matching type', () => {
-    expect(matchesInsuranceTypes(p, new Set(['medicare']))).toBe(true)
+  it('returns true when raw string contains the tag (case-insensitive)', () => {
+    expect(matchesInsuranceTypes(p, new Set(['Medicare']))).toBe(true)
   })
 
   it('returns true when one of multiple selections matches', () => {
-    expect(matchesInsuranceTypes(p, new Set(['medicare', 'private insurance']))).toBe(true)
+    expect(matchesInsuranceTypes(p, new Set(['Medicare', 'Private Insurance']))).toBe(true)
   })
 
-  it('returns false when no type matches', () => {
-    expect(matchesInsuranceTypes(p, new Set(['private insurance']))).toBe(false)
+  it('returns false when no tag appears in raw string', () => {
+    expect(matchesInsuranceTypes(p, new Set(['Private Insurance']))).toBe(false)
+  })
+
+  it('matches substring within a longer prose value', () => {
+    const prose = makeProgram({ insuranceTypesRaw: 'Medicare required. Must have Medicare Part A to enroll' })
+    expect(matchesInsuranceTypes(prose, new Set(['Medicare']))).toBe(true)
   })
 })
 
@@ -127,9 +133,9 @@ describe('matchesSupportAmounts', () => {
 
 describe('computeResults', () => {
   const programs: ProgramRecord[] = [
-    makeProgram({ id: 'a', status: 'Open', insuranceTypes: ['medicare'], grantAmount: '$500' }),
-    makeProgram({ id: 'b', status: 'Closed', insuranceTypes: ['private insurance'], grantAmount: '$2,000' }),
-    makeProgram({ id: 'c', status: 'Open', insuranceTypes: ['medicaid'], grantAmount: '$15,000' }),
+    makeProgram({ id: 'a', status: 'Open', insuranceTypes: ['medicare'], insuranceTypesRaw: 'Medicare required', grantAmount: '$500' }),
+    makeProgram({ id: 'b', status: 'Closed', insuranceTypes: ['private insurance'], insuranceTypesRaw: 'Private insurance required', grantAmount: '$2,000' }),
+    makeProgram({ id: 'c', status: 'Open', insuranceTypes: ['medicaid'], insuranceTypesRaw: 'Medicaid required', grantAmount: '$15,000' }),
   ]
 
   it('returns all programs when no filters or query', () => {
@@ -142,7 +148,7 @@ describe('computeResults', () => {
       debouncedQuery: '',
       filters: {
         ...emptyFilters(),
-        insuranceTypes: new Set(['medicare']),
+        insuranceTypes: new Set(['Medicare']),
         grantStatuses: new Set(['open']),
       },
       sort: { field: null, direction: 'desc' },
@@ -155,7 +161,7 @@ describe('computeResults', () => {
       debouncedQuery: '',
       filters: {
         ...emptyFilters(),
-        insuranceTypes: new Set(['medicare', 'medicaid']),
+        insuranceTypes: new Set(['Medicare', 'Medicaid']),
       },
       sort: { field: null, direction: 'desc' },
     })

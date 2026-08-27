@@ -488,6 +488,27 @@
   margin: 0 0 var(--spacing-md, 16px);
 }
 
+.ff-card__insurance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px var(--spacing-sm, 8px);
+  margin: 0 0 var(--spacing-md, 16px);
+  font-size: var(--font-size-sm, 14px);
+}
+
+.ff-card__insurance-label {
+  font-weight: 600;
+  color: var(--color-text, #111827);
+}
+
+.ff-card__insurance-label::after {
+  content: ':';
+}
+
+.ff-card__insurance-value {
+  color: var(--color-text-secondary, #6b7280);
+}
+
 .ff-card__meta {
   display: grid;
   grid-template-columns: 1fr;

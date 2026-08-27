@@ -6,6 +6,8 @@
 
 import type { AppState, FilterState, ProgramRecord, ProgramStatus, SortState } from './types'
 
+export const INSURANCE_FILTER_TAGS = ['Medicare', 'Medicaid', 'Military Benefits', 'N/A']
+
 export function computeResults(
   programs: readonly ProgramRecord[],
   state: Pick<AppState, 'debouncedQuery' | 'filters' | 'sort'>,
@@ -58,7 +60,8 @@ export function matchesInsuranceTypes(
   selected: Set<string>,
 ): boolean {
   if (selected.size === 0) return true
-  return program.insuranceTypes.some((t) => selected.has(t.toLowerCase()))
+  const raw = program.insuranceTypesRaw.toLowerCase()
+  return [...selected].some((tag) => raw.includes(tag.toLowerCase()))
 }
 
 export function matchesGrantStatuses(
@@ -88,9 +91,12 @@ export function computeFilterCounts(
   for (const p of programs) {
     const s = p.status.toLowerCase()
     statuses.set(s, (statuses.get(s) ?? 0) + 1)
-    for (const t of p.insuranceTypes) {
-      insuranceTypes.set(t, (insuranceTypes.get(t) ?? 0) + 1)
-    }
+  }
+  for (const tag of INSURANCE_FILTER_TAGS) {
+    const count = programs.filter((p) =>
+      p.insuranceTypesRaw.toLowerCase().includes(tag.toLowerCase())
+    ).length
+    if (count > 0) insuranceTypes.set(tag, count)
   }
   return { statuses, insuranceTypes }
 }
@@ -116,17 +122,8 @@ export interface FilterDimension {
 }
 
 export function buildFilterDimensions(programs: readonly ProgramRecord[]): FilterDimension[] {
-  const insuranceSet = new Set<string>()
-  for (const p of programs) {
-    for (const t of p.insuranceTypes) {
-      insuranceSet.add(t)
-    }
-  }
-  return [
-    {
-      id: 'insuranceTypes',
-      label: 'Insurance Requirements',
-      values: [...insuranceSet].sort(),
-    },
-  ]
+  const presentTags = INSURANCE_FILTER_TAGS.filter((tag) =>
+    programs.some((p) => p.insuranceTypesRaw.toLowerCase().includes(tag.toLowerCase()))
+  )
+  return [{ id: 'insuranceTypes', label: 'Insurance Requirements', values: presentTags }]
 }
