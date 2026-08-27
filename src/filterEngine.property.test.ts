@@ -16,6 +16,8 @@ const programArb: fc.Arbitrary<ProgramRecord> = fc.record({
   lastUpdated: fc.option(fc.date(), { nil: null }),
   diseaseIndications: fc.array(fc.string()),
   insuranceTypes: fc.array(fc.string()),
+  insuranceTypesRaw: fc.string(),
+  insuranceDescription: fc.string(),
   grantAmount: fc.option(fc.string(), { nil: null }),
   applyUrl: fc.string(),
   programUrl: fc.string(),
@@ -74,7 +76,7 @@ describe('computeResults – property-based', () => {
           },
           sort: { field: null, direction: 'desc' as const },
         })
-        return results.every((r) => r.insuranceTypes.includes('__no_such_type__'))
+        return results.every((r) => r.insuranceTypesRaw.includes('__no_such_type__'))
       }),
     )
   })
