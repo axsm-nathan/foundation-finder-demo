@@ -137,13 +137,15 @@ function parseMetadata(raw: string): MetadataField[] {
   try {
     const parsed = JSON.parse(raw)
     if (!Array.isArray(parsed)) return []
-    return parsed.filter(
-      (item): item is MetadataField =>
-        typeof item === 'object' &&
-        item !== null &&
-        typeof item.label === 'string' &&
-        typeof item.value === 'string',
-    )
+    return parsed
+      .filter(
+        (item): item is Record<string, unknown> =>
+          typeof item === 'object' &&
+          item !== null &&
+          typeof item.value === 'string' &&
+          (typeof item.label === 'string' || typeof item.key === 'string'),
+      )
+      .map((item) => ({ label: (item.label ?? item.key) as string, value: item.value as string }))
   } catch {
     return []
   }
