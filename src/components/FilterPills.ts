@@ -14,8 +14,7 @@ export function FilterPills(props: FilterPillsProps): HTMLElement {
   const { insuranceTypes } = computeFilterCounts(props.allPrograms)
   const hasActiveFilters =
     props.activeFilters.insuranceTypes.size > 0 ||
-    props.activeFilters.grantStatuses.size > 0 ||
-    props.activeFilters.supportAmounts.size > 0
+    props.activeFilters.grantStatuses.size > 0
 
   const container = document.createElement('div')
   container.className = 'ff-filters'
@@ -81,15 +80,7 @@ function makePill(labelText: string, count: number, active: boolean): HTMLButton
   return btn
 }
 
-function formatLabel(dim: keyof FilterState, value: string): string {
-  if (dim === 'supportAmounts') {
-    switch (value) {
-      case 'under-1000': return 'Under $1,000'
-      case '1000-5000': return '$1,000–$5,000'
-      case '5000-10000': return '$5,000–$10,000'
-      case '10000-plus': return '$10,000+'
-    }
-  }
+function formatLabel(_dim: keyof FilterState, value: string): string {
   if (value === 'n/a') return 'N/A'
   return value.charAt(0).toUpperCase() + value.slice(1)
 }

@@ -20,6 +20,8 @@ function makeProgram(id: string): ProgramRecord {
     lastUpdated: null,
     diseaseIndications: [],
     insuranceTypes: ['medicare'],
+    insuranceTypesRaw: 'Medicare',
+    insuranceDescription: '',
     grantAmount: null,
     applyUrl: '',
     programUrl: '',

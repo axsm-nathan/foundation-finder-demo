@@ -30,7 +30,6 @@ const programArb: fc.Arbitrary<ProgramRecord> = fc.record({
 const emptyFilters = () => ({
   insuranceTypes: new Set<string>(),
   grantStatuses: new Set<string>(),
-  supportAmounts: new Set<string>(),
 })
 
 describe('computeResults – property-based', () => {
@@ -72,7 +71,6 @@ describe('computeResults – property-based', () => {
           filters: {
             insuranceTypes: new Set(['__no_such_type__']),
             grantStatuses: new Set<string>(),
-            supportAmounts: new Set<string>(),
           },
           sort: { field: null, direction: 'desc' as const },
         })

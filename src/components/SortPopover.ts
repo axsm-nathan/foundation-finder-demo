@@ -8,9 +8,8 @@ export interface SortPopoverProps {
 const SORT_ICON = `<svg class="ff-sort-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 4L7 20M7 20L3 16M7 20L11 16M17 20L17 4M17 4L13 8M17 4L21 8"/></svg>`
 
 const OPTIONS: { field: SortField; label: string }[] = [
-  { field: 'foundationName', label: 'By Name' },
+  { field: 'programName', label: 'By Name' },
   { field: 'lastUpdated', label: 'Last Updated' },
-  { field: 'grantAmount', label: 'Grant Amount' },
 ]
 
 export function SortButton(props: SortPopoverProps): HTMLElement {
@@ -107,6 +106,6 @@ function updateButtonLabel(btn: HTMLButtonElement, sort: SortState): void {
   }
   const opt = OPTIONS.find((o) => o.field === sort.field)
   const dir = sort.direction === 'asc' ? '↑' : '↓'
-  btn.innerHTML = `<span class="ff-sort-btn__text">${opt?.label ?? 'Sort'} ${dir}</span>${SORT_ICON}`
+  btn.innerHTML = `<span class="ff-sort-btn__text">${opt?.label ?? 'Sort'}</span><span class="ff-sort-btn__dir" aria-hidden="true">${dir}</span>${SORT_ICON}`
   btn.classList.add('ff-sort-btn--active')
 }
