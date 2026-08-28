@@ -47,11 +47,9 @@ export interface FilterState {
   insuranceTypes: Set<string>
   /** OR within dimension; e.g. "open", "closed" */
   grantStatuses: Set<string>
-  /** OR within dimension; range keys e.g. "under-1000", "1000-5000" */
-  supportAmounts: Set<string>
 }
 
-export type SortField = 'foundationName' | 'lastUpdated' | 'grantAmount'
+export type SortField = 'programName' | 'lastUpdated'
 export type SortDirection = 'asc' | 'desc'
 
 export interface SortState {

@@ -4,7 +4,6 @@ import {
   matchesSearch,
   matchesInsuranceTypes,
   matchesGrantStatuses,
-  matchesSupportAmounts,
 } from './filterEngine'
 import type { ProgramRecord } from './types'
 
@@ -34,7 +33,6 @@ function makeProgram(overrides: Partial<ProgramRecord> = {}): ProgramRecord {
 const emptyFilters = () => ({
   insuranceTypes: new Set<string>(),
   grantStatuses: new Set<string>(),
-  supportAmounts: new Set<string>(),
 })
 
 // ── matchesSearch ────────────────────────────────────────────────────────────
@@ -117,16 +115,6 @@ describe('matchesGrantStatuses', () => {
 
   it('returns false for non-matching status', () => {
     expect(matchesGrantStatuses(p, new Set(['closed']))).toBe(false)
-  })
-})
-
-// ── matchesSupportAmounts ────────────────────────────────────────────────────
-
-describe('matchesSupportAmounts', () => {
-  it('always returns true (support amount filter removed)', () => {
-    expect(matchesSupportAmounts(makeProgram(), new Set())).toBe(true)
-    expect(matchesSupportAmounts(makeProgram(), new Set(['under-1000']))).toBe(true)
-    expect(matchesSupportAmounts(makeProgram({ grantAmount: null }), new Set(['under-1000']))).toBe(true)
   })
 })
 

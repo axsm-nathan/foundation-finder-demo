@@ -13,10 +13,9 @@ const DISCLAIMER_KEY = 'ff-disclaimer-v1'
 const emptyFilters = (): FilterState => ({
   insuranceTypes: new Set<string>(),
   grantStatuses: new Set<string>(),
-  supportAmounts: new Set<string>(),
 })
 
-const defaultSort = (): SortState => ({ field: 'foundationName', direction: 'asc' })
+const defaultSort = (): SortState => ({ field: 'programName', direction: 'asc' })
 
 let state: AppState = {
   allPrograms: [],
@@ -105,7 +104,6 @@ export function clearFilters(): void {
   setState('filters', {
     insuranceTypes: new Set(),
     grantStatuses: new Set(),
-    supportAmounts: new Set(),
   })
 }
 

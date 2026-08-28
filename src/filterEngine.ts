@@ -16,8 +16,7 @@ export function computeResults(
     (p) =>
       matchesSearch(p, state.debouncedQuery) &&
       matchesInsuranceTypes(p, state.filters.insuranceTypes) &&
-      matchesGrantStatuses(p, state.filters.grantStatuses) &&
-      matchesSupportAmounts(p, state.filters.supportAmounts),
+      matchesGrantStatuses(p, state.filters.grantStatuses),
   )
   return sortResults(filtered, state.sort)
 }
@@ -26,14 +25,8 @@ function sortResults(programs: ProgramRecord[], sort: SortState): ProgramRecord[
   if (sort.field === null) return programs
   const dir = sort.direction === 'asc' ? 1 : -1
   return [...programs].sort((a, b) => {
-    if (sort.field === 'foundationName') {
-      return (a.foundationName.localeCompare(b.foundationName) || a.programName.localeCompare(b.programName)) * dir
-    }
-    if (sort.field === 'grantAmount') {
-      if (a.grantAmount === null && b.grantAmount === null) return 0
-      if (a.grantAmount === null) return 1
-      if (b.grantAmount === null) return -1
-      return a.grantAmount.localeCompare(b.grantAmount) * dir
+    if (sort.field === 'programName') {
+      return (a.programName.localeCompare(b.programName) || a.foundationName.localeCompare(b.foundationName)) * dir
     }
     if (sort.field === 'lastUpdated') {
       const aVal = a.lastUpdated?.getTime() ?? -Infinity
@@ -70,13 +63,6 @@ export function matchesGrantStatuses(
 ): boolean {
   if (selected.size === 0) return true
   return selected.has(program.status.toLowerCase())
-}
-
-export function matchesSupportAmounts(
-  _program: ProgramRecord,
-  _selected: Set<string>,
-): boolean {
-  return true
 }
 
 // ---------------------------------------------------------------------------
