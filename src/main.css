@@ -923,5 +923,14 @@
   
   .ff-card__contact {
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-right: 0;
+  }
+
+  .ff-card__foot {
+    flex-direction: column;
+    align-items: center;
   }
 }
