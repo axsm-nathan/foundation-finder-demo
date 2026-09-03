@@ -24,7 +24,7 @@ export function DisclaimerModal(props: DisclaimerModalProps): HTMLElement {
 
   const p1 = document.createElement('p')
   p1.textContent =
-    'Axsome Therapuetics, Inc. is not affiliated with, nor have provided financial support to any independent 3rd party foundation or charitable organization.'
+    'Axsome Therapuetics, Inc. is not affiliated with, and has not provided financial support to any independent 3rd party foundation or charitable organization.'
 
   const p2 = document.createElement('p')
   p2.textContent =

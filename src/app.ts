@@ -89,9 +89,12 @@ export function mount(rootEl: HTMLElement): void {
     'Axsome is not affiliated with, and has not provided any financial support to, any of the independent 3rd party foundation or charitable organizations listed below. Eligibility requirements, program availability, and benefit amounts are determined solely by each organization with no input from Axsome, and are subject to change at any time. Axsome has no role in determining eligibility or whether any foundation will provide support.'
   const legalP2 = document.createElement('p')
   legalP2.textContent =
-    'Information provided below is based on review of publicly-available sources and is believed to be accurate as of the date indicated. Contact the organizations directly for most up-to-date information and to request assistance.'
+    'Information provided below is based on review of publicly-available sources and is believed to be accurate as of the date indicated but has not been verified by Axsome. Contact the organizations directly for most up-to-date information and to request assistance.'
+  const legalP3 = document.createElement('p')
+  legalP3.textContent = 'Program descriptions are taken from organization website or electronically generated based on publicly available information if no complete description could be identified. Open/closed status of programs change frequently. Information provided is based on periodic review of publicly-available sources and has not been specifically verified by Axsome. For most current status, contact organization.'
   legalDisclaimer.appendChild(legalP1)
   legalDisclaimer.appendChild(legalP2)
+  legalDisclaimer.appendChild(legalP3)
   rootEl.appendChild(legalDisclaimer)
 
   rootEl.appendChild(controlsSection)
