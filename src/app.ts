@@ -231,7 +231,7 @@ export function mount(rootEl: HTMLElement): void {
       }
       listEl.appendChild(grid)
     }
-
+/*
     if (window.location.origin !== 'https://axsomeonmyside.com') {
       const placeholder = GrantCard({
         program: {
@@ -262,6 +262,7 @@ export function mount(rootEl: HTMLElement): void {
       })
       listEl.appendChild(placeholder)
     }
+    */
 
     const firstCard = listEl.querySelector<HTMLElement>('.ff-card')
     if (firstCard) {
